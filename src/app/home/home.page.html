@@ -1,0 +1,24 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Ion Currency
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="ion-padding">
+      
+    <ion-searchbar #searchbar showCancelButton="focus"></ion-searchbar>
+
+    <ion-list>
+      <ion-item button detail *ngFor="let rate of latest.rates | filterCurrency: searchbar.value | keyvalue" (click)="viewCurInfo(rate.key)">
+        <ion-avatar slot="start">
+          <ion-img src="{{getFlag(rate.key)}}"></ion-img>
+        </ion-avatar>
+        <ion-label>{{rate.value | currency: rate.key: 'symbol-narrow': '1.2-4'}}</ion-label>
+      </ion-item>
+    </ion-list>
+    
+  </div>
+</ion-content>
