@@ -10,7 +10,6 @@ import { CountriesService } from '../services/countries/countries.service';
 export class HomePage implements OnInit {
 
   latest: any = [];
-  filteredRates: any;
 
   constructor(private rates: RatesService, private countries: CountriesService) {}
 
@@ -21,7 +20,6 @@ export class HomePage implements OnInit {
   getLatestRates() {
     this.rates.latest().subscribe(data => {
       this.latest = data;
-      this.filteredRates = this.latest.rates;
     });
   }
 
