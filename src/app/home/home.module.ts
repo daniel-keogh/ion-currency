@@ -6,6 +6,7 @@ import { RouterModule } from '@angular/router';
 
 import { HomePage } from './home.page';
 import { FilterCurrencyPipe } from '../pipes/filter-currency/filter-currency.pipe';
+import { CurrencyNamePipe } from '../pipes/currency-name/currency-name.pipe';
 
 @NgModule({
   imports: [
@@ -19,6 +20,6 @@ import { FilterCurrencyPipe } from '../pipes/filter-currency/filter-currency.pip
       }
     ])
   ],
-  declarations: [HomePage, FilterCurrencyPipe]
+  declarations: [HomePage, FilterCurrencyPipe, CurrencyNamePipe]
 })
 export class HomePageModule {}

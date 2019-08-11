@@ -9,12 +9,19 @@
 <ion-content>
   <div class="ion-padding">
       
-    <ion-searchbar #searchbar showCancelButton="focus"></ion-searchbar>
+    <ion-searchbar #searchbar showCancelButton="never" placeholder="Currency code"></ion-searchbar>
+
+    <ion-item>
+      <ion-label>Base currency</ion-label>
+      <ion-select interface="action-sheet" [placeholder]="defaultCurrency | currencyName" [(ngModel)]="defaultCurrency" (ionChange)="getLatestRates()">
+        <ion-select-option *ngFor="let currency of currencies" value="{{currency}}">{{currency | currencyName}}</ion-select-option>
+      </ion-select>
+    </ion-item>
 
     <ion-list>
       <ion-item button detail *ngFor="let rate of latest.rates | filterCurrency: searchbar.value | keyvalue" (click)="viewCurInfo(rate.key)">
         <ion-avatar slot="start">
-          <ion-img src="{{getFlag(rate.key)}}"></ion-img>
+          <ion-img [src]="getFlag(rate.key)"></ion-img>
         </ion-avatar>
         <ion-label>{{rate.value | currency: rate.key: 'symbol-narrow': '1.2-4'}}</ion-label>
       </ion-item>
