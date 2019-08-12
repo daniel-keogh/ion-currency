@@ -1,12 +1,12 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { Currencies } from './currencies';
+import { currencies } from './currencies';
 
 @Pipe({
   name: 'currencyName'
 })
 export class CurrencyNamePipe implements PipeTransform {
 
-  transform(currencyCode: any): any {
-    return Currencies.find(c => currencyCode === c.code).name;
+  transform(currencyCode: string): string {
+    return currencies.find(c => currencyCode === c.code).name;
   }
 }

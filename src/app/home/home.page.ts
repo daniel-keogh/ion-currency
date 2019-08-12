@@ -11,7 +11,8 @@ export class HomePage implements OnInit {
 
   latest: any = [];
   currencies: string[] = [];
-  defaultCurrency: string = 'EUR';
+  defaultCurrency = 'EUR';
+  isSearchbarOpen = false;
 
   constructor(private rates: RatesService, private countries: CountriesService) {}
 
@@ -20,7 +21,6 @@ export class HomePage implements OnInit {
   }
 
   getLatestRates() {
-    console.log(this.defaultCurrency)
     this.rates.latest(this.defaultCurrency).subscribe(data => {
       this.latest = data;
     }, (err) => {

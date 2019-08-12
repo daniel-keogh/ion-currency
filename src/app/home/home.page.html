@@ -1,16 +1,20 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>
+    <ion-title *ngIf="!isSearchbarOpen">
       Ion Currency
     </ion-title>
+    <ion-buttons slot="end">
+      <ion-button *ngIf="!isSearchbarOpen" (click)="isSearchbarOpen = true">
+        <ion-icon slot="icon-only" name="search"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-searchbar #searchbar showCancelButton="always" [hidden]="!isSearchbarOpen" placeholder="Currency code" (ionCancel)="isSearchbarOpen = false"></ion-searchbar>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <div class="ion-padding">
-      
-    <ion-searchbar #searchbar showCancelButton="never" placeholder="Currency code"></ion-searchbar>
-
     <ion-item>
       <ion-label>Base currency</ion-label>
       <ion-select interface="action-sheet" [placeholder]="defaultCurrency | currencyName" [(ngModel)]="defaultCurrency" (ionChange)="getLatestRates()">
@@ -26,6 +30,5 @@
         <ion-label>{{rate.value | currency: rate.key: 'symbol-narrow': '1.2-4'}}</ion-label>
       </ion-item>
     </ion-list>
-    
   </div>
 </ion-content>

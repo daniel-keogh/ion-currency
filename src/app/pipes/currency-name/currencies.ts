@@ -1,4 +1,4 @@
-export const Currencies = [
+export const currencies = [
     {code: 'CAD', name: 'Canadian Dollar'},
     {code: 'EUR', name: 'Euro'},
     {code: 'HKD', name: 'Hong Kong Dollar'},
