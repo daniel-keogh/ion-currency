@@ -5,14 +5,17 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
 import { HomePage } from './home.page';
-import { FilterCurrencyPipe } from '../pipes/filter-currency/filter-currency.pipe';
-import { CurrencyNamePipe } from '../pipes/currency-name/currency-name.pipe';
+
+import { DirectivesModule } from '../directives/directives.module';
+import { PipesModule } from '../pipes/pipes.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
+    DirectivesModule,
+    PipesModule,
     RouterModule.forChild([
       {
         path: '',
@@ -20,6 +23,6 @@ import { CurrencyNamePipe } from '../pipes/currency-name/currency-name.pipe';
       }
     ])
   ],
-  declarations: [HomePage, FilterCurrencyPipe, CurrencyNamePipe]
+  declarations: [HomePage]
 })
 export class HomePageModule {}

@@ -1,5 +1,4 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { CurrencyNamePipe } from '../currency-name/currency-name.pipe';
 
 @Pipe({
   name: 'filterCurrency'
@@ -7,15 +6,13 @@ import { CurrencyNamePipe } from '../currency-name/currency-name.pipe';
 export class FilterCurrencyPipe implements PipeTransform {
 
   transform(rates: any, ...args: any[]): any {
-    if (!args[0]) {
+    if (!args[0])
       return rates;
-    }
 
-    const filtered: any = [];
+    const filtered: object = {};
     for (const rate in rates) {
-      if (rate.toLowerCase().includes(args[0].toLowerCase())) {
+      if (rate.toUpperCase().includes(args[0].toUpperCase()))
         filtered[rate] = rates[rate];
-      }
     }
     return filtered;
   }

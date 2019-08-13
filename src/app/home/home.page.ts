@@ -38,4 +38,8 @@ export class HomePage implements OnInit {
     // TODO navigate to info page
     console.log(currencyCode);
   }
+
+  openConverterPage() {
+    // TODO navigate to converter page
+  }
 }

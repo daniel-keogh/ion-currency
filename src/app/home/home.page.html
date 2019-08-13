@@ -1,15 +1,24 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title *ngIf="!isSearchbarOpen">
-      Ion Currency
-    </ion-title>
-    <ion-buttons slot="end">
-      <ion-button *ngIf="!isSearchbarOpen" (click)="isSearchbarOpen = true">
-        <ion-icon slot="icon-only" name="search"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-
-    <ion-searchbar #searchbar showCancelButton="always" [hidden]="!isSearchbarOpen" placeholder="Currency code" (ionCancel)="isSearchbarOpen = false"></ion-searchbar>
+    <ng-container *ngIf="!isSearchbarOpen; then defaultToolbar"></ng-container>
+    <ng-template #defaultToolbar>
+      <ion-title>Ion Currency</ion-title>
+      <ion-buttons slot="end">
+        <ion-button (click)="isSearchbarOpen = true">
+          <ion-icon slot="icon-only" name="search"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ng-template>
+    
+    <ion-searchbar 
+      #searchbar
+      placeholder="Currency code"
+      showCancelButton="always"
+      [searchLimit]="3"
+      [hidden]="!isSearchbarOpen"
+      (ionCancel)="isSearchbarOpen = false"
+      (ionInput)="searchbar.value = $event.target.value.toUpperCase()">
+    </ion-searchbar>
   </ion-toolbar>
 </ion-header>
 
@@ -31,4 +40,10 @@
       </ion-item>
     </ion-list>
   </div>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="openConverterPage()">
+      <ion-icon name="calculator"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>
