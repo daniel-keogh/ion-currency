@@ -3,8 +3,19 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
-  { path: 'home', loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)},
-  { path: 'currency-info', loadChildren: './currency-info/currency-info.module#CurrencyInfoPageModule' },
+  { path: 'home', loadChildren: () => import('./pages/home/home.module').then( m => m.HomePageModule)},
+  {
+    path: 'currency-info',
+    children: [
+      {
+        path: ':currency-code',
+        loadChildren: './pages/currency-info/currency-info.module#CurrencyInfoPageModule'
+      }
+    ]
+  },
+  { path: 'converter', loadChildren: './pages/converter/converter.module#ConverterPageModule' },
+  { path: 'settings', loadChildren: './pages/settings/settings.module#SettingsPageModule' },
+  { path: 'about', loadChildren: './pages/about/about.module#AboutPageModule' },
 ];
 
 @NgModule({

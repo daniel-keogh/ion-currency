@@ -1,0 +1,22 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+        <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Settings</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-list-header>
+        <ion-label color="primary">General</ion-label>
+    </ion-list-header>
+    <ion-item>
+      <ion-label>Default base currency</ion-label>
+      <ion-select [placeholder]="defaultCurrency | currencyName" [(ngModel)]="defaultCurrency" (ionChange)="changeDefaultBase()">
+          <ion-select-option *ngFor="let currency of currencies" value="{{currency.code}}">{{currency.name}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+  </ion-list>
+</ion-content>

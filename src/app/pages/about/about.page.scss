@@ -1,0 +1,39 @@
+ion-grid {
+    margin-top: 5%;
+}
+
+ion-card-header, ion-card-content ion-label {
+    text-align: center;
+}
+
+ion-card-header {
+    padding: 24px;
+}
+
+.logo-container {
+    border-radius: 50%;
+    height: 100px;
+    position: relative;
+    width: 100px;
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    
+    .logo {
+        padding: 1px;
+        height: 100%;
+        width: 100%;
+        position: absolute;
+        top: 50%; 
+        transform: translate(0%, -50%);
+        border: 2px solid #fff;
+        border-radius: 50%;
+        box-shadow: 0 0 5px gray;
+    }
+}
+
+.button-links {
+    display: flex;
+    justify-content: center;
+    padding-top: 16px;
+}

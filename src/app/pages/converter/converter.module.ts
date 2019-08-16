@@ -5,12 +5,12 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { IonicModule } from '@ionic/angular';
 
-import { CurrencyInfoPage } from './currency-info.page';
+import { ConverterPage } from './converter.page';
 
 const routes: Routes = [
   {
     path: '',
-    component: CurrencyInfoPage
+    component: ConverterPage
   }
 ];
 
@@ -21,6 +21,6 @@ const routes: Routes = [
     IonicModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [CurrencyInfoPage]
+  declarations: [ConverterPage]
 })
-export class CurrencyInfoPageModule {}
+export class ConverterPageModule {}

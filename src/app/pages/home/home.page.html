@@ -3,6 +3,11 @@
     <ng-container *ngIf="!isSearchbarOpen; then defaultToolbar"></ng-container>
     <ng-template #defaultToolbar>
       <ion-title>Ion Currency</ion-title>
+      <ion-buttons slot="start">
+        <ion-button (click)="menu.openMenu()">
+          <ion-icon slot="icon-only" name="menu"></ion-icon>
+        </ion-button>
+      </ion-buttons>
       <ion-buttons slot="end">
         <ion-button (click)="isSearchbarOpen = true">
           <ion-icon slot="icon-only" name="search"></ion-icon>
@@ -32,7 +37,7 @@
     </ion-item>
 
     <ion-list>
-      <ion-item button detail *ngFor="let rate of latest.rates | filterCurrency: searchbar.value | keyvalue" (click)="viewCurInfo(rate.key)">
+      <ion-item button detail *ngFor="let rate of latest.rates | filterCurrency: searchbar.value | keyvalue" [routerLink]="['/currency-info', rate.key]">
         <ion-avatar slot="start">
           <ion-img [src]="getFlag(rate.key)"></ion-img>
         </ion-avatar>
@@ -42,8 +47,10 @@
   </div>
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button (click)="openConverterPage()">
+    <ion-fab-button routerLink="/converter">
       <ion-icon name="calculator"></ion-icon>
     </ion-fab-button>
   </ion-fab>
 </ion-content>
+
+<app-menu></app-menu>

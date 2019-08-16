@@ -6,8 +6,9 @@ import { RouterModule } from '@angular/router';
 
 import { HomePage } from './home.page';
 
-import { DirectivesModule } from '../directives/directives.module';
-import { PipesModule } from '../pipes/pipes.module';
+import { DirectivesModule } from '../../directives/directives.module';
+import { PipesModule } from '../../pipes/pipes.module';
+import { MenuComponent } from 'src/app/components/menu/menu.component';
 
 @NgModule({
   imports: [
@@ -23,6 +24,6 @@ import { PipesModule } from '../pipes/pipes.module';
       }
     ])
   ],
-  declarations: [HomePage]
+  declarations: [HomePage, MenuComponent]
 })
 export class HomePageModule {}

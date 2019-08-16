@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { RatesService } from '../services/rates/rates.service';
-import { CountriesService } from '../services/countries/countries.service';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { RatesService } from '../../services/rates/rates.service';
+import { CountriesService } from '../../services/countries/countries.service';
+import { IonSearchbar, IonButton } from '@ionic/angular';
+import { MenuComponent } from 'src/app/components/menu/menu.component';
 
 @Component({
   selector: 'app-home',
@@ -14,10 +16,25 @@ export class HomePage implements OnInit {
   defaultCurrency = 'EUR';
   isSearchbarOpen = false;
 
+  @ViewChild(IonSearchbar, {static: false}) searchbar: IonSearchbar;
+  @ViewChild(MenuComponent, {static: false}) menu: MenuComponent;
   constructor(private rates: RatesService, private countries: CountriesService) {}
 
   ngOnInit() {
     this.getLatestRates();
+  }
+
+  ionViewDidLeave() {
+    if (this.isSearchbarOpen) {
+      this.isSearchbarOpen = false;
+      if (this.searchbar.value) {
+        this.searchbar.value = null;
+      }
+    }
+
+    if (this.menu.isOpen) {
+      this.menu.closeMenu();
+    }
   }
 
   getLatestRates() {
@@ -32,14 +49,5 @@ export class HomePage implements OnInit {
 
   getFlag(currencyCode: string) {
     return this.countries.getFlagUrl(currencyCode);
-  }
-
-  viewCurInfo(currencyCode: string) {
-    // TODO navigate to info page
-    console.log(currencyCode);
-  }
-
-  openConverterPage() {
-    // TODO navigate to converter page
   }
 }
