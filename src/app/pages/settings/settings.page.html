@@ -14,7 +14,7 @@
     </ion-list-header>
     <ion-item>
       <ion-label>Default base currency</ion-label>
-      <ion-select [placeholder]="defaultCurrency | currencyName" [(ngModel)]="defaultCurrency" (ionChange)="changeDefaultBase()">
+      <ion-select [placeholder]="defaultCurrency | currencyName" [(ngModel)]="defaultCurrency" (ionChange)="changeBaseCurrency()">
           <ion-select-option *ngFor="let currency of currencies" value="{{currency.code}}">{{currency.name}}</ion-select-option>
       </ion-select>
     </ion-item>

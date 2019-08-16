@@ -12,7 +12,7 @@ export class RatesService {
 
   constructor(private http: HttpClient) { }
 
-  latest(base: string = 'EUR'): Observable<any> {
+  latest(base: string): Observable<any> {
     return this.http.get(`https://api.exchangeratesapi.io/latest?base=${base}`);
   }
 }

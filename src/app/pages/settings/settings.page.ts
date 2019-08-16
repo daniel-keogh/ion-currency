@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { StorageService } from 'src/app/services/storage/storage.service';
 import { currencies } from '../../common/currencies';
 
 @Component({
@@ -8,16 +9,22 @@ import { currencies } from '../../common/currencies';
 })
 export class SettingsPage implements OnInit {
 
-  defaultCurrency = 'EUR';
+  defaultCurrency: string;
   currencies = [...currencies];
 
-  constructor() { }
+  constructor(private storage: StorageService) { }
 
   ngOnInit() {
   }
 
-  changeDefaultBase() {
-    // TODO
+  ionViewWillEnter() {
+    this.storage.getBaseCurrency().then(cur => {
+      this.defaultCurrency = cur;
+    });
+  }
+
+  changeBaseCurrency() {
+    this.storage.setBaseCurrency(this.defaultCurrency);
   }
 
 }

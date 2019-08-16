@@ -1,8 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { RatesService } from '../../services/rates/rates.service';
 import { CountriesService } from '../../services/countries/countries.service';
-import { IonSearchbar, IonButton } from '@ionic/angular';
+import { IonSearchbar } from '@ionic/angular';
 import { MenuComponent } from 'src/app/components/menu/menu.component';
+import { StorageService } from 'src/app/services/storage/storage.service';
 
 @Component({
   selector: 'app-home',
@@ -13,15 +14,22 @@ export class HomePage implements OnInit {
 
   latest: any = [];
   currencies: string[] = [];
-  defaultCurrency = 'EUR';
+  defaultCurrency: string;
   isSearchbarOpen = false;
 
   @ViewChild(IonSearchbar, {static: false}) searchbar: IonSearchbar;
   @ViewChild(MenuComponent, {static: false}) menu: MenuComponent;
-  constructor(private rates: RatesService, private countries: CountriesService) {}
+  constructor(private rates: RatesService, private countries: CountriesService, private storage: StorageService) {}
 
   ngOnInit() {
-    this.getLatestRates();
+  }
+
+  ionViewWillEnter() {
+    this.storage.getBaseCurrency().then(cur => {
+      this.defaultCurrency = cur;
+    }).then(() => {
+      this.getLatestRates();
+    });
   }
 
   ionViewDidLeave() {

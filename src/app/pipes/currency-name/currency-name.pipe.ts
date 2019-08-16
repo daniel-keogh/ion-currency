@@ -7,6 +7,7 @@ import { currencies } from '../../common/currencies';
 export class CurrencyNamePipe implements PipeTransform {
 
   transform(currencyCode: string): string {
-    return currencies.find(c => currencyCode === c.code).name;
+    const currency = currencies.find(c => currencyCode === c.code);
+    return currency ? currency.name : undefined;
   }
 }
