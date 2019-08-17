@@ -8,7 +8,7 @@ import { HomePage } from './home.page';
 
 import { DirectivesModule } from '../../directives/directives.module';
 import { PipesModule } from '../../pipes/pipes.module';
-import { MenuComponent } from 'src/app/components/menu/menu.component';
+import { ComponentsModule } from 'src/app/components/components.module';
 
 @NgModule({
   imports: [
@@ -17,6 +17,7 @@ import { MenuComponent } from 'src/app/components/menu/menu.component';
     IonicModule,
     DirectivesModule,
     PipesModule,
+    ComponentsModule,
     RouterModule.forChild([
       {
         path: '',
@@ -24,6 +25,6 @@ import { MenuComponent } from 'src/app/components/menu/menu.component';
       }
     ])
   ],
-  declarations: [HomePage, MenuComponent]
+  declarations: [HomePage]
 })
 export class HomePageModule {}

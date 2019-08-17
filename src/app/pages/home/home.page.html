@@ -27,6 +27,8 @@
   </ion-toolbar>
 </ion-header>
 
+<app-menu></app-menu>
+
 <ion-content>
   <div class="ion-padding">
     <ion-item>
@@ -44,13 +46,15 @@
         <ion-label>{{rate.value | currency: rate.key: 'symbol-narrow': '1.2-4'}}</ion-label>
       </ion-item>
     </ion-list>
+
+    <ion-item text-center lines="none" *ngIf="!searchbar.value">
+      <ion-label color="primary">{{latest.date | date: 'mediumDate'}}</ion-label>
+    </ion-item>
   </div>
 
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" class="ion-padding">
     <ion-fab-button routerLink="/converter">
       <ion-icon name="calculator"></ion-icon>
     </ion-fab-button>
   </ion-fab>
 </ion-content>
-
-<app-menu></app-menu>

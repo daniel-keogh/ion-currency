@@ -8,5 +8,33 @@
 </ion-header>
 
 <ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col size-md="8" offset-md="2">
+        <ion-card>
+          <ion-card-header>
+            <ion-card-subtitle>{{1 | currency: baseCur: '': '1.0'}} {{baseCur}} equals</ion-card-subtitle>
+            <ion-card-title>{{(1 * baseToConv) | currency: convertTo: '': '1.2-4'}} {{convertTo}}</ion-card-title>
+          </ion-card-header>
 
+          <ion-item-divider>
+            <ion-text>
+              <ion-note color="primary">{{date | date: 'mediumDate'}}</ion-note>
+            </ion-text>
+          </ion-item-divider>
+          
+          <ion-card-content>
+            <ion-item>
+              <ion-label position="floating">{{baseCur | currencyName}}</ion-label>
+              <ion-input #base autofocus type="number" clear-input step="1" (ionInput)="convert.value = baseChanged(base.value)"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="floating">{{convertTo | currencyName}}</ion-label>
+              <ion-input #convert type="number" clear-input step="1" (ionInput)="base.value = convertChanged(convert.value)"></ion-input>
+            </ion-item>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>

@@ -11,7 +11,8 @@ export class SearchLimitDirective {
 
   @HostListener('keypress', ['$event'])
   onKeypress(e: any) {
-    if (e.target.value.length === this.limit)
+    if (e.target.value.length === this.limit) {
       e.preventDefault();
+    }
   }
 }

@@ -9,7 +9,8 @@ import { currencies } from '../../common/currencies';
 })
 export class SettingsPage implements OnInit {
 
-  defaultCurrency: string;
+  defaultBase: string;
+  defaultConverted: string;
   currencies = [...currencies];
 
   constructor(private storage: StorageService) { }
@@ -19,12 +20,19 @@ export class SettingsPage implements OnInit {
 
   ionViewWillEnter() {
     this.storage.getBaseCurrency().then(cur => {
-      this.defaultCurrency = cur;
+      this.defaultBase = cur;
+    });
+    this.storage.getConvertedCurrency().then(cur => {
+      this.defaultConverted = cur;
     });
   }
 
   changeBaseCurrency() {
-    this.storage.setBaseCurrency(this.defaultCurrency);
+    this.storage.setBaseCurrency(this.defaultBase);
+  }
+
+  changeConvertedCurrency() {
+    this.storage.setConvertedCurrency(this.defaultConverted);
   }
 
 }

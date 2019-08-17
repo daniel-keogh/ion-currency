@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-        <ion-back-button defaultHref="/home"></ion-back-button>
+      <ion-back-button defaultHref="/home"></ion-back-button>
     </ion-buttons>
     <ion-title>Settings</ion-title>
   </ion-toolbar>
@@ -10,12 +10,18 @@
 <ion-content>
   <ion-list>
     <ion-list-header>
-        <ion-label color="primary">General</ion-label>
+      <ion-label color="primary">General</ion-label>
     </ion-list-header>
     <ion-item>
       <ion-label>Default base currency</ion-label>
-      <ion-select [placeholder]="defaultCurrency | currencyName" [(ngModel)]="defaultCurrency" (ionChange)="changeBaseCurrency()">
-          <ion-select-option *ngFor="let currency of currencies" value="{{currency.code}}">{{currency.name}}</ion-select-option>
+      <ion-select [placeholder]="defaultBase | currencyName" [(ngModel)]="defaultBase" (ionChange)="changeBaseCurrency()">
+        <ion-select-option *ngFor="let currency of currencies" value="{{currency.code}}">{{currency.name}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label>Convert to</ion-label>
+      <ion-select [placeholder]="defaultConverted | currencyName" [(ngModel)]="defaultConverted" (ionChange)="changeConvertedCurrency()">
+        <ion-select-option *ngFor="let currency of currencies" value="{{currency.code}}">{{currency.name}}</ion-select-option>
       </ion-select>
     </ion-item>
   </ion-list>

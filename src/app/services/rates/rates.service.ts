@@ -15,4 +15,8 @@ export class RatesService {
   latest(base: string): Observable<any> {
     return this.http.get(`https://api.exchangeratesapi.io/latest?base=${base}`);
   }
+
+  convert(base: string, convertTo: string) {
+    return this.http.get(`https://api.exchangeratesapi.io/latest?symbols=${convertTo}&base=${base}`);
+  }
 }

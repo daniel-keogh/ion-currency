@@ -3,6 +3,8 @@ import { Storage } from '@ionic/storage';
 
 const DEF_BASE_CUR = 'EUR';
 const BASE_CUR_KEY = 'Base Currency';
+const DEF_CONV_CUR = 'USD';
+const CONV_CUR_KEY = 'Converted Currency';
 
 @Injectable({
   providedIn: 'root'
@@ -24,6 +26,22 @@ export class StorageService {
       }
     }).catch(() => {
       return DEF_BASE_CUR;
+    });
+  }
+
+  setConvertedCurrency(currencyCode: string) {
+    this.storage.set(CONV_CUR_KEY, currencyCode);
+  }
+
+  async getConvertedCurrency(): Promise<string> {
+    return this.storage.get(CONV_CUR_KEY).then(cur => {
+      if (cur) {
+        return cur;
+      } else {
+        throw new Error();
+      }
+    }).catch(() => {
+      return DEF_CONV_CUR;
     });
   }
 }
