@@ -18,7 +18,7 @@ export class StorageService {
   }
 
   async getBaseCurrency(): Promise<string> {
-    return this.storage.get(BASE_CUR_KEY).then(cur => {
+    return await this.storage.get(BASE_CUR_KEY).then(cur => {
       if (cur) {
         return cur;
       } else {
@@ -34,7 +34,7 @@ export class StorageService {
   }
 
   async getConvertedCurrency(): Promise<string> {
-    return this.storage.get(CONV_CUR_KEY).then(cur => {
+    return await this.storage.get(CONV_CUR_KEY).then(cur => {
       if (cur) {
         return cur;
       } else {

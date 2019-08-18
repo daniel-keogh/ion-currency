@@ -6,6 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
 import { MenuComponent } from './menu/menu.component';
+import { SettingsPopoverComponent } from './settings-popover/settings-popover.component';
 
 @NgModule({
     imports: [
@@ -15,10 +16,12 @@ import { MenuComponent } from './menu/menu.component';
         RouterModule
     ],
     declarations: [
-        MenuComponent
+        MenuComponent,
+        SettingsPopoverComponent
     ],
     exports: [
-        MenuComponent
+        MenuComponent,
+        SettingsPopoverComponent
     ]
 })
 export class ComponentsModule {}

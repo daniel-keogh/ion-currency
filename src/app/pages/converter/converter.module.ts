@@ -7,6 +7,8 @@ import { IonicModule } from '@ionic/angular';
 
 import { ConverterPage } from './converter.page';
 import { PipesModule } from 'src/app/pipes/pipes.module';
+import { ComponentsModule } from 'src/app/components/components.module';
+import { SettingsPopoverComponent } from 'src/app/components/settings-popover/settings-popover.component';
 
 const routes: Routes = [
   {
@@ -21,8 +23,10 @@ const routes: Routes = [
     FormsModule,
     IonicModule,
     PipesModule,
+    ComponentsModule,
     RouterModule.forChild(routes)
   ],
+  entryComponents: [SettingsPopoverComponent],
   declarations: [ConverterPage]
 })
 export class ConverterPageModule {}
