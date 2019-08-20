@@ -41,7 +41,7 @@
     <ion-list>
       <ion-item button detail *ngFor="let rate of latest.rates | filterCurrency: searchbar.value | keyvalue" [routerLink]="['/currency-info', rate.key]">
         <ion-avatar slot="start">
-          <ion-img [src]="getFlag(rate.key)"></ion-img>
+          <ion-img [src]="getFlag(rate.key)" (ionError)="$event.target.src='../../../assets/images/flag.svg'"></ion-img>
         </ion-avatar>
         <ion-label>{{rate.value | currency: rate.key: 'symbol-narrow': '1.2-4'}}</ion-label>
       </ion-item>
@@ -51,10 +51,6 @@
       <ion-label color="primary">{{latest.date | date: 'mediumDate'}}</ion-label>
     </ion-item>
   </div>
-
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed" class="ion-padding">
-    <ion-fab-button routerLink="/converter">
-      <ion-icon name="calculator"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
 </ion-content>
+
+<app-converter-fab></app-converter-fab>

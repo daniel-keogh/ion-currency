@@ -7,6 +7,7 @@ import { RouterModule } from '@angular/router';
 
 import { MenuComponent } from './menu/menu.component';
 import { SettingsPopoverComponent } from './settings-popover/settings-popover.component';
+import { ConverterFabComponent } from './converter-fab/converter-fab.component';
 
 @NgModule({
     imports: [
@@ -17,11 +18,13 @@ import { SettingsPopoverComponent } from './settings-popover/settings-popover.co
     ],
     declarations: [
         MenuComponent,
-        SettingsPopoverComponent
+        SettingsPopoverComponent,
+        ConverterFabComponent
     ],
     exports: [
         MenuComponent,
-        SettingsPopoverComponent
+        SettingsPopoverComponent,
+        ConverterFabComponent
     ]
 })
 export class ComponentsModule {}

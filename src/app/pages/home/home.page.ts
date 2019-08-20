@@ -40,7 +40,7 @@ export class HomePage implements OnInit {
       }
     }
 
-    if (this.menu.isOpen) {
+    if (this.menu.isOpen()) {
       this.menu.closeMenu();
     }
   }

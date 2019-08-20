@@ -8,5 +8,33 @@
 </ion-header>
 
 <ion-content>
-  <p>{{info.name}}</p>
+  <div class="ion-padding">
+    <div class="chart-container" style="position: relative; height:40vh; width:80vw; margin: auto">
+      <canvas #canvas></canvas>
+    </div>
+
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>{{currency}} against the {{base}}</ion-card-title>
+        <ion-card-subtitle>Since last month</ion-card-subtitle>
+      </ion-card-header>
+
+      <ion-card-content *ngIf="histData">
+        <ion-item>
+          <ion-label>High</ion-label>
+          <ion-badge slot="end">{{histData.points.high | currency: currency: 'symbol-narrow': '1.2-4'}}</ion-badge>
+        </ion-item>
+        <ion-item>
+          <ion-label>Low</ion-label>
+          <ion-badge slot="end">{{histData.points.low | currency: currency: 'symbol-narrow': '1.2-4'}}</ion-badge>
+        </ion-item>
+        <ion-item>
+          <ion-label>Average</ion-label>
+          <ion-badge slot="end">{{histData.points.avg | currency: currency: 'symbol-narrow': '1.2-4'}}</ion-badge>
+        </ion-item>
+      </ion-card-content>
+    </ion-card>
+  </div>
 </ion-content>
+
+<app-converter-fab></app-converter-fab>

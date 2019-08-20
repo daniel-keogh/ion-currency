@@ -24,19 +24,20 @@ export class ConverterPage implements OnInit {
   ngOnInit() {
   }
 
-  async ionViewWillEnter() {
-    await this.storage.getBaseCurrency().then(cur => {
-      this.baseCur = cur;
-    });
-    await this.storage.getConvertedCurrency().then(cur => {
-      this.convertTo = cur;
-    });
+  ionViewWillEnter() {
+    Promise.all([
+      this.storage.getBaseCurrency(),
+      this.storage.getConvertedCurrency()
+    ])
+    .then(curCodes => {
+      [this.baseCur, this.convertTo] = curCodes;
 
-    this.rates.convert(this.baseCur, this.convertTo).subscribe((data: any) => {
-      this.baseToConv = data.rates[this.convertTo];
-      this.date = data.date;
-    }, (err) => {
-      console.log(err);
+      this.rates.convert(this.baseCur, this.convertTo).subscribe(data => {
+        this.baseToConv = data.rates[this.convertTo];
+        this.date = data.date;
+      }, (err) => {
+        console.log(err);
+      });
     });
   }
 

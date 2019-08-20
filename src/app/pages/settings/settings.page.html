@@ -12,17 +12,32 @@
     <ion-list-header>
       <ion-label color="primary">General</ion-label>
     </ion-list-header>
-    <ion-item>
-      <ion-label>Default base currency</ion-label>
-      <ion-select [placeholder]="defaultBase | currencyName" [(ngModel)]="defaultBase" (ionChange)="changeBaseCurrency()">
-        <ion-select-option *ngFor="let currency of currencies" value="{{currency.code}}">{{currency.name}}</ion-select-option>
-      </ion-select>
-    </ion-item>
-    <ion-item>
-      <ion-label>Convert to</ion-label>
-      <ion-select [placeholder]="defaultConverted | currencyName" [(ngModel)]="defaultConverted" (ionChange)="changeConvertedCurrency()">
-        <ion-select-option *ngFor="let currency of currencies" value="{{currency.code}}">{{currency.name}}</ion-select-option>
-      </ion-select>
-    </ion-item>
+
+    <ion-item-group>
+      <ion-item lines="none">
+        <ion-label>Default base currency</ion-label>
+        <ion-select [placeholder]="defaultBase | currencyName" [(ngModel)]="defaultBase" (ionChange)="changeBaseCurrency()">
+          <ion-select-option *ngFor="let currency of currencies" value="{{currency.code}}">{{currency.name}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item-divider class="ion-padding-horizontal">
+        <ion-label text-wrap>Set which currency others will be compared against, e.g. on the home screen as well as on historical charts.</ion-label>
+      </ion-item-divider>
+    </ion-item-group>
+
+    <ion-item-group>
+      <ion-item lines="none">
+        <ion-label>Convert to</ion-label>
+        <ion-select [placeholder]="defaultConverted | currencyName" [(ngModel)]="defaultConverted" (ionChange)="changeConvertedCurrency()">
+          <ion-select-option *ngFor="let currency of currencies" value="{{currency.code}}">{{currency.name}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item-divider class="ion-padding-horizontal">
+        <ion-label text-wrap>The default currency the base currency will be converted to on the converter page.</ion-label>
+      </ion-item-divider>
+    </ion-item-group>
+
   </ion-list>
 </ion-content>

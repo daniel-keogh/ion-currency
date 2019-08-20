@@ -8,6 +8,7 @@ import { IonicModule } from '@ionic/angular';
 import { CurrencyInfoPage } from './currency-info.page';
 
 import { PipesModule } from '../../pipes/pipes.module';
+import { ComponentsModule } from 'src/app/components/components.module';
 
 const routes: Routes = [
   {
@@ -22,6 +23,7 @@ const routes: Routes = [
     FormsModule,
     IonicModule,
     PipesModule,
+    ComponentsModule,
     RouterModule.forChild(routes)
   ],
   declarations: [CurrencyInfoPage]
