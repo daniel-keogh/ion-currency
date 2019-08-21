@@ -39,7 +39,7 @@
     </ion-item>
 
     <ion-list>
-      <ion-item button detail *ngFor="let rate of latest.rates | filterCurrency: searchbar.value | keyvalue" [routerLink]="['/currency-info', rate.key]">
+      <ion-item button detail *ngFor="let rate of latest.rates | filterCurrency: searchbar.value | keyvalue" [routerLink]="['/currency', rate.key]">
         <ion-avatar slot="start">
           <ion-img [src]="getFlag(rate.key)" (ionError)="$event.target.src='../../../assets/images/flag.svg'"></ion-img>
         </ion-avatar>

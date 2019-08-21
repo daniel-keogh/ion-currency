@@ -5,32 +5,53 @@
     </ion-buttons>
     <ion-title>{{currency | currencyName}}</ion-title>
   </ion-toolbar>
+  <ion-toolbar>
+    <ion-segment scrollable (ionChange)="segmentChanged($event)" value="week" #segment>
+      <ion-segment-button value="week">
+        <ion-label>Week</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="month">
+        <ion-label>Month</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="sixMonths">
+        <ion-label>6 Months</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="year">
+        <ion-label>Year</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <div class="ion-padding">
-    <div class="chart-container" style="position: relative; height:40vh; width:80vw; margin: auto">
+    <div class="chart-container">
       <canvas #canvas></canvas>
     </div>
 
-    <ion-card>
+    <ion-card *ngIf="points">
       <ion-card-header>
         <ion-card-title>{{currency}} against the {{base}}</ion-card-title>
-        <ion-card-subtitle>Since last month</ion-card-subtitle>
       </ion-card-header>
 
-      <ion-card-content *ngIf="histData">
+      <ion-item-divider>
+        <ion-text>
+          <ion-note color="primary">Since {{segment.value === 'sixMonths' ? '6 months ago' : 'last ' + segment.value}}.</ion-note>
+        </ion-text>
+      </ion-item-divider>
+
+      <ion-card-content>
         <ion-item>
           <ion-label>High</ion-label>
-          <ion-badge slot="end">{{histData.points.high | currency: currency: 'symbol-narrow': '1.2-4'}}</ion-badge>
+          <ion-badge slot="end" color="success">{{points.high | currency: currency: 'symbol-narrow': '1.2-4'}}</ion-badge>
         </ion-item>
         <ion-item>
           <ion-label>Low</ion-label>
-          <ion-badge slot="end">{{histData.points.low | currency: currency: 'symbol-narrow': '1.2-4'}}</ion-badge>
+          <ion-badge slot="end" color="warning">{{points.low | currency: currency: 'symbol-narrow': '1.2-4'}}</ion-badge>
         </ion-item>
         <ion-item>
           <ion-label>Average</ion-label>
-          <ion-badge slot="end">{{histData.points.avg | currency: currency: 'symbol-narrow': '1.2-4'}}</ion-badge>
+          <ion-badge slot="end" color="primary">{{points.average | currency: currency: 'symbol-narrow': '1.2-4'}}</ion-badge>
         </ion-item>
       </ion-card-content>
     </ion-card>

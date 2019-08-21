@@ -1,4 +1,6 @@
-export const currencies = [
+import { Currency } from './../interfaces/currency';
+
+export const currencies: Currency[] = [
     {code: 'AUD', name: 'Australian Dollar'},
     {code: 'BGN', name: 'Bulgarian Lev'},
     {code: 'BRL', name: 'Brazilian Real'},

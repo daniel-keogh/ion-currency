@@ -1,6 +1,7 @@
-import { Injectable, ElementRef } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { HistoricalData } from 'src/app/interfaces/historical-data';
 
 @Injectable({
   providedIn: 'root'
@@ -17,22 +18,28 @@ export class RatesService {
     return this.http.get(`https://api.exchangeratesapi.io/latest?symbols=${convertTo}&base=${base}`);
   }
 
-  historical(compare: string, base: string, monthPeriod: number = 1): Observable<any> {
-    const formatDate = (date: Date) => {
-      const dd = String(date.getDate()).padStart(2, '0');
-      const mm = String(date.getMonth() + 1).padStart(2, '0');
-      const yyyy = date.getFullYear();
-      return `${yyyy}-${mm}-${dd}`;
-    };
+  async getHistoricalDataset(currency: string, base: string, numMonths?: number, numDays: number = 7): Promise<HistoricalData[]> {
+    const formatDate = (date: Date): string => date.toISOString().split('T')[0];
 
-    const subtractMonths = (date: Date, months: number) => {
+    const subtractMonths = (date: Date, months: number): Date => {
       date.setMonth(date.getMonth() - months);
       return date;
     };
 
-    const today: any = new Date();
-    const start: any = subtractMonths(new Date(), monthPeriod);
+    const subtractDays = (date: Date, days: number): Date => {
+      date.setDate(date.getDate() - days);
+      return date;
+    }
 
-    return this.http.get(`https://api.exchangeratesapi.io/history?start_at=${formatDate(start)}&end_at=${formatDate(today)}&symbols=${compare}&base=${base}`);
+    const today: Date = new Date();
+    const start: Date = numMonths ? subtractMonths(new Date(), numMonths) : subtractDays(new Date(), numDays);
+
+    return await this.http.get(
+      `https://api.exchangeratesapi.io/history?start_at=${formatDate(start)}&end_at=${formatDate(today)}&symbols=${currency}&base=${base}`
+    )
+    .toPromise()
+    .then((data: any) => {
+      return Object.keys(data.rates).sort().map(dt => ({date: dt, rate: data.rates[dt][currency]}));
+    });
   }
 }

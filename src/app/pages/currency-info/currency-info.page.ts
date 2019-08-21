@@ -5,6 +5,7 @@ import { StorageService } from 'src/app/services/storage/storage.service';
 import { currencies } from 'src/app/common/currencies';
 import { AlertController } from '@ionic/angular';
 import { HistoricalData } from '../../interfaces/historical-data';
+import { RatesService } from 'src/app/services/rates/rates.service';
 
 @Component({
   selector: 'app-currency-info',
@@ -16,14 +17,16 @@ export class CurrencyInfoPage implements OnInit {
   currency: string;
   base: string;
   currencies = [...currencies];
-  histData: HistoricalData;
+  points: object;
+  months: number;
 
-  @ViewChild('canvas', {static: true}) canvas: ElementRef;
+  @ViewChild('canvas', {static: false}) canvas: ElementRef<HTMLCanvasElement>;
   constructor(
     private activatedRouter: ActivatedRoute,
     private alertController: AlertController,
     private stats: StatsService,
     private storage: StorageService,
+    private rates: RatesService,
     private router: Router
   ) { }
 
@@ -42,12 +45,13 @@ export class CurrencyInfoPage implements OnInit {
     });
   }
 
-  async createChart() {
+  async createChart(days?: number, months?: number) {
     this.base = await this.storage.getBaseCurrency();
 
-    this.stats.generateChart(this.canvas, this.currency, this.base)
-    .then(data => {
-      this.histData = data;
+    this.rates.getHistoricalDataset(this.currency, this.base, months, days)
+    .then((dataset: HistoricalData[]) => {
+      this.stats.generateChart(this.canvas, dataset, this.currency, this.base);
+      this.points = this.stats.getPoints(dataset);
     })
     .catch(err => {
       console.log(err);
@@ -69,9 +73,30 @@ export class CurrencyInfoPage implements OnInit {
   async invalidCurrencyAlert() {
     const alert = await this.alertController.create({
       header: 'Invalid Currency',
-      message: 'Sorry, we couldn\'t find anything about that currency.',
+      message: 'Sorry, failed to find anything about that currency.',
       buttons: ['OK']
     });
     await alert.present();
+  }
+
+  segmentChanged(ev: any) {
+    let months: number;
+    switch (ev.detail.value) {
+      case 'week':
+        this.createChart();
+        return;
+      case 'month':
+        months = 1;
+        break;
+      case 'sixMonths':
+        months = 6;
+        break;
+      case 'year':
+        months = 12;
+        break;
+      default:
+        break;
+    }
+    this.createChart(undefined, months);
   }
 }

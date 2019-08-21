@@ -5,14 +5,14 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class FilterCurrencyPipe implements PipeTransform {
 
-  transform(rates: any, ...args: any[]): any {
-    if (!args[0]) {
+  transform(rates: any, search: string): any {
+    if (!search) {
       return rates;
     }
 
-    const filtered: object = {};
+    const filtered: any = [];
     for (const rate in rates) {
-      if (rate.toUpperCase().includes(args[0].toUpperCase())) {
+      if (rate.toUpperCase().includes(search.toUpperCase())) {
         filtered[rate] = rates[rate];
       }
     }

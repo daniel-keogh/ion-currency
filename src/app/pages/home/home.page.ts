@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { RatesService } from '../../services/rates/rates.service';
 import { CountriesService } from '../../services/countries/countries.service';
-import { IonSearchbar } from '@ionic/angular';
+import { IonSearchbar, ToastController } from '@ionic/angular';
 import { MenuComponent } from 'src/app/components/menu/menu.component';
 import { StorageService } from 'src/app/services/storage/storage.service';
 
@@ -19,7 +19,12 @@ export class HomePage implements OnInit {
 
   @ViewChild(IonSearchbar, {static: false}) searchbar: IonSearchbar;
   @ViewChild(MenuComponent, {static: false}) menu: MenuComponent;
-  constructor(private rates: RatesService, private countries: CountriesService, private storage: StorageService) {}
+  constructor(
+    private rates: RatesService,
+    private countries: CountriesService,
+    private storage: StorageService,
+    private toastController: ToastController
+  ) {}
 
   ngOnInit() {
   }
@@ -50,6 +55,7 @@ export class HomePage implements OnInit {
       this.latest = data;
     }, (err) => {
       console.log(err);
+      this.presentErrorToast(err);
     }, () => {
       this.currencies = [...Object.keys(this.latest.rates)].sort();
     });
@@ -57,5 +63,15 @@ export class HomePage implements OnInit {
 
   getFlag(currencyCode: string) {
     return this.countries.getFlagUrl(currencyCode);
+  }
+
+  async presentErrorToast(err: Error) {
+    const toast = await this.toastController.create({
+      header: 'Failed to get currency rates',
+      message: err.name,
+      duration: 3000,
+      buttons: [{text: 'OK'}]
+    });
+    toast.present();
   }
 }

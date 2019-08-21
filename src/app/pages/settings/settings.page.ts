@@ -19,11 +19,12 @@ export class SettingsPage implements OnInit {
   }
 
   ionViewWillEnter() {
-    this.storage.getBaseCurrency().then(cur => {
-      this.defaultBase = cur;
-    });
-    this.storage.getConvertedCurrency().then(cur => {
-      this.defaultConverted = cur;
+    Promise.all([
+      this.storage.getBaseCurrency(),
+      this.storage.getConvertedCurrency()
+    ])
+    .then(curCodes => {
+      [this.defaultBase, this.defaultConverted] = curCodes;
     });
   }
 

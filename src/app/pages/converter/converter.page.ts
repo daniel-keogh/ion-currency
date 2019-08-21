@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChildren, QueryList } from '@angular/core';
 import { StorageService } from 'src/app/services/storage/storage.service';
 import { currencies } from '../../common/currencies';
 import { RatesService } from 'src/app/services/rates/rates.service';
-import { PopoverController, IonInput } from '@ionic/angular';
+import { PopoverController, IonInput, ToastController } from '@ionic/angular';
 import { SettingsPopoverComponent } from 'src/app/components/settings-popover/settings-popover.component';
 
 @Component({
@@ -19,7 +19,12 @@ export class ConverterPage implements OnInit {
   date: string;
 
   @ViewChildren(IonInput) inputs: QueryList<IonInput>;
-  constructor(private storage: StorageService, private rates: RatesService, private popoverController: PopoverController) { }
+  constructor(
+    private storage: StorageService,
+    private rates: RatesService,
+    private popoverController: PopoverController,
+    private toastController: ToastController
+  ) { }
 
   ngOnInit() {
   }
@@ -37,6 +42,7 @@ export class ConverterPage implements OnInit {
         this.date = data.date;
       }, (err) => {
         console.log(err);
+        this.presentErrorToast(err);
       });
     });
   }
@@ -61,5 +67,15 @@ export class ConverterPage implements OnInit {
       showBackdrop: false
     });
     return await popover.present();
+  }
+
+  async presentErrorToast(err: Error) {
+    const toast = await this.toastController.create({
+      header: 'Failed to get currency rates',
+      message: err.name,
+      duration: 3000,
+      buttons: [{text: 'OK'}]
+    });
+    toast.present();
   }
 }
