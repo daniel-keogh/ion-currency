@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
               <ion-fab-button routerLink="/converter">
                 <ion-icon name="calculator"></ion-icon>
               </ion-fab-button>
-            </ion-fab>`
+             </ion-fab>`
 })
 export class ConverterFabComponent implements OnInit {
 

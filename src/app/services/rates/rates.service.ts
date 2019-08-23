@@ -18,7 +18,7 @@ export class RatesService {
     return this.http.get(`https://api.exchangeratesapi.io/latest?symbols=${convertTo}&base=${base}`);
   }
 
-  async getHistoricalDataset(currency: string, base: string, numMonths?: number, numDays: number = 7): Promise<HistoricalData[]> {
+  async getHistoricalDataset(currency: string, base: string, numMonths?: number, numDays?: number): Promise<HistoricalData[]> {
     const formatDate = (date: Date): string => date.toISOString().split('T')[0];
 
     const subtractMonths = (date: Date, months: number): Date => {
@@ -29,7 +29,7 @@ export class RatesService {
     const subtractDays = (date: Date, days: number): Date => {
       date.setDate(date.getDate() - days);
       return date;
-    }
+    };
 
     const today: Date = new Date();
     const start: Date = numMonths ? subtractMonths(new Date(), numMonths) : subtractDays(new Date(), numDays);

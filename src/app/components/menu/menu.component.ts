@@ -1,5 +1,5 @@
-import { Component, OnInit, Input, HostListener } from '@angular/core';
-import { MenuController, IonButton } from '@ionic/angular';
+import { Component, OnInit } from '@angular/core';
+import { MenuController } from '@ionic/angular';
 
 @Component({
   selector: 'app-menu',
@@ -12,7 +12,7 @@ export class MenuComponent implements OnInit {
 
   ngOnInit() {}
 
-  isOpen() {
+  isOpen(): Promise<boolean> {
     return this.menu.isOpen();
   }
 

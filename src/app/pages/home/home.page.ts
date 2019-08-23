@@ -45,23 +45,24 @@ export class HomePage implements OnInit {
       }
     }
 
-    if (this.menu.isOpen()) {
-      this.menu.closeMenu();
-    }
+    this.menu.isOpen().then(isOpen => {
+      if (isOpen) {
+        this.menu.closeMenu();
+      }
+    });
   }
 
   getLatestRates() {
     this.rates.latest(this.defaultCurrency).subscribe(data => {
       this.latest = data;
     }, (err) => {
-      console.log(err);
       this.presentErrorToast(err);
     }, () => {
       this.currencies = [...Object.keys(this.latest.rates)].sort();
     });
   }
 
-  getFlag(currencyCode: string) {
+  getFlag(currencyCode: string): string {
     return this.countries.getFlagUrl(currencyCode);
   }
 

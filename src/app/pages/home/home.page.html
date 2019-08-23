@@ -4,9 +4,7 @@
     <ng-template #defaultToolbar>
       <ion-title>Ion Currency</ion-title>
       <ion-buttons slot="start">
-        <ion-button (click)="menu.openMenu()">
-          <ion-icon slot="icon-only" name="menu"></ion-icon>
-        </ion-button>
+        <ion-menu-button></ion-menu-button>
       </ion-buttons>
       <ion-buttons slot="end">
         <ion-button (click)="isSearchbarOpen = true">
@@ -47,7 +45,7 @@
       </ion-item>
     </ion-list>
 
-    <ion-item text-center lines="none" *ngIf="!searchbar.value">
+    <ion-item class="ion-text-center" lines="none" *ngIf="!searchbar.value">
       <ion-label color="primary">{{latest.date | date: 'mediumDate'}}</ion-label>
     </ion-item>
   </div>

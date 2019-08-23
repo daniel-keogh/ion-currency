@@ -17,20 +17,21 @@ export class CurrencyInfoPage implements OnInit {
   currency: string;
   base: string;
   currencies = [...currencies];
-  points: object;
+  points: any;
   months: number;
 
   @ViewChild('canvas', {static: false}) canvas: ElementRef<HTMLCanvasElement>;
   constructor(
     private activatedRouter: ActivatedRoute,
     private alertController: AlertController,
-    private stats: StatsService,
-    private storage: StorageService,
     private rates: RatesService,
-    private router: Router
+    private router: Router,
+    private stats: StatsService,
+    private storage: StorageService
   ) { }
 
   ngOnInit() {
+    const days = 7;
     this.activatedRouter.paramMap.subscribe(paramMap => {
       if (paramMap.get('currency-code')) {
         // make sure the currency-code in the URL is valid
@@ -41,7 +42,7 @@ export class CurrencyInfoPage implements OnInit {
         }
       }
       this.currency = paramMap.get('currency-code');
-      this.createChart();
+      this.createChart(days);
     });
   }
 
@@ -50,11 +51,15 @@ export class CurrencyInfoPage implements OnInit {
 
     this.rates.getHistoricalDataset(this.currency, this.base, months, days)
     .then((dataset: HistoricalData[]) => {
-      this.stats.generateChart(this.canvas, dataset, this.currency, this.base);
+      this.stats.generateChart({
+        canvas: this.canvas,
+        dataset,
+        currency: this.currency,
+        base: this.base
+      });
       this.points = this.stats.getPoints(dataset);
     })
     .catch(err => {
-      console.log(err);
       this.router.navigate(['/home']);
       this.genericErrorAlert(err);
     });
@@ -81,22 +86,29 @@ export class CurrencyInfoPage implements OnInit {
 
   segmentChanged(ev: any) {
     let months: number;
+    let days: number;
+    const enum Months {
+      month = 1,
+      sixMonths = 6,
+      year = 12
+    }
+
     switch (ev.detail.value) {
       case 'week':
-        this.createChart();
-        return;
+        days = 7;
+        break;
       case 'month':
-        months = 1;
+        months = Months.month;
         break;
       case 'sixMonths':
-        months = 6;
+        months = Months.sixMonths;
         break;
       case 'year':
-        months = 12;
+        months = Months.year;
         break;
       default:
         break;
     }
-    this.createChart(undefined, months);
+    this.createChart(days, months);
   }
 }

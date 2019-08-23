@@ -9,7 +9,12 @@ export class StatsService {
 
   constructor() { }
 
-  generateChart(canvas: ElementRef<HTMLCanvasElement>, dataset: HistoricalData[], currency: string, base: string): Chart {
+  generateChart({ canvas, dataset, currency, base }: {
+    canvas: ElementRef<HTMLCanvasElement>;
+    dataset: HistoricalData[];
+    currency: string;
+    base: string;
+  }): Chart {
     return new Chart(canvas.nativeElement, {
       type: 'line',
       data: {
@@ -38,7 +43,7 @@ export class StatsService {
     });
   }
 
-  getPoints(dataset: HistoricalData[]): object {
+  getPoints(dataset: HistoricalData[]): any {
     const rates = dataset.map(r => r.rate);
     return {
       high: this.getHigh(rates),

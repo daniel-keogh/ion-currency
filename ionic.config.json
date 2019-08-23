@@ -1,5 +1,7 @@
 {
   "name": "ion-currency",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }

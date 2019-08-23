@@ -41,7 +41,6 @@ export class ConverterPage implements OnInit {
         this.baseToConv = data.rates[this.convertTo];
         this.date = data.date;
       }, (err) => {
-        console.log(err);
         this.presentErrorToast(err);
       });
     });
