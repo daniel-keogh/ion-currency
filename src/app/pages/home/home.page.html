@@ -15,6 +15,7 @@
     
     <ion-searchbar 
       #searchbar
+      class="search"
       placeholder="Currency code"
       showCancelButton="always"
       [searchLimit]="3"
@@ -31,7 +32,7 @@
   <div class="ion-padding">
     <ion-item>
       <ion-label>Base currency</ion-label>
-      <ion-select 
+      <ion-select
         interface="action-sheet"
         [placeholder]="defaultCurrency | currencyName"
         [(ngModel)]="defaultCurrency"

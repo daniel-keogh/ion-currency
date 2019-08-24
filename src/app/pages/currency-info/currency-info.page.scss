@@ -5,5 +5,13 @@
     margin: auto;
     min-height: 350px;
     max-height: 700px;
-    padding: 15px;
+    padding: 10px;
+}
+
+.chart-border {
+    border: 1px solid var(--ion-color-light-shade);
+}
+
+ion-grid {
+    padding-bottom: 10%;
 }

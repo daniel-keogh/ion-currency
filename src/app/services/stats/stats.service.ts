@@ -29,8 +29,8 @@ export class StatsService {
           {
             label: `1 ${base}`,
             data: dataset.map(item => item.rate),
-            backgroundColor: 'rgba(62, 149, 205, 0.2)',
-            borderColor: 'rgba(62, 149, 205, 1)',
+            backgroundColor: 'rgba(40, 175, 176, 0.2)',
+            borderColor: 'rgba(40, 175, 176, 1)',
             borderWidth: 2,
             pointRadius: 1.2
           }
