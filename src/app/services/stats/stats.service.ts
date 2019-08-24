@@ -7,7 +7,9 @@ import { HistoricalData } from '../../interfaces/historical-data';
 })
 export class StatsService {
 
-  constructor() { }
+  private history: Chart;
+
+  constructor() {}
 
   generateChart({ canvas, dataset, currency, base }: {
     canvas: ElementRef<HTMLCanvasElement>;
@@ -15,17 +17,22 @@ export class StatsService {
     currency: string;
     base: string;
   }): Chart {
-    return new Chart(canvas.nativeElement, {
+    // If a chart was already drawn, nuke it and make a new one.
+    if (this.history) {
+      this.history.destroy();
+    }
+    return this.history = new Chart(canvas.nativeElement, {
       type: 'line',
       data: {
         labels: dataset.map(item => item.date),
         datasets: [
           {
-            label: `${base} to ${currency}`,
+            label: `1 ${base}`,
             data: dataset.map(item => item.rate),
-            backgroundColor: 'rgba(255, 99, 132, 0.2)',
-            borderColor: 'rgba(255,99,132,1)',
-            borderWidth: 1
+            backgroundColor: 'rgba(62, 149, 205, 0.2)',
+            borderColor: 'rgba(62, 149, 205, 1)',
+            borderWidth: 2,
+            pointRadius: 1.2
           }
         ]
       },
@@ -36,8 +43,13 @@ export class StatsService {
         },
         title: {
           display: true,
-          text: `${base} to ${currency}`,
-          fontSize: 14
+          text: `1 ${base} in ${currency}`,
+          fontSize: 16
+        },
+        tooltips: {
+          callbacks: {
+            label: (tooltipItem, data) => `${data.datasets[tooltipItem.datasetIndex].label} = ${tooltipItem.yLabel} ${currency}`
+          }
         }
       }
     });
