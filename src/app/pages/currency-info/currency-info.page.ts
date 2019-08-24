@@ -18,7 +18,6 @@ export class CurrencyInfoPage implements OnInit {
   base: string;
   currencies = [...currencies];
   points: any;
-  months: number;
 
   @ViewChild('canvas', {static: false}) canvas: ElementRef<HTMLCanvasElement>;
   constructor(
@@ -32,22 +31,24 @@ export class CurrencyInfoPage implements OnInit {
 
   ngOnInit() {
     const days = 7;
-    this.activatedRouter.paramMap.subscribe(paramMap => {
-      if (paramMap.get('currency-code')) {
-        // make sure the currency-code in the URL is valid
-        if (!this.currencies.find(cur => paramMap.get('currency-code') === cur.code)) {
-          this.router.navigate(['/home']);
-          this.invalidCurrencyAlert();
-          return;
-        }
-      }
-      this.currency = paramMap.get('currency-code');
+    const validateCurrency = (currencyCode: string) => this.currencies.find(cur => currencyCode === cur.code) ? true : false;
+
+    this.activatedRouter.paramMap.subscribe(pm => this.currency = pm.get('currency-code'));
+    this.activatedRouter.queryParamMap.subscribe(qpm => this.base = qpm.get('base'));
+
+    if (validateCurrency(this.base) && validateCurrency(this.currency)) {
       this.createChart(days);
-    });
+    } else {
+      this.router.navigate(['/home']);
+      this.invalidCurrencyAlert();
+    }
   }
 
   async createChart(days?: number, months?: number) {
-    this.base = await this.storage.getBaseCurrency();
+    // Base currency wasn't passed into the URL: Use default
+    if (this.base === undefined) {
+      this.base = await this.storage.getBaseCurrency();
+    }
 
     this.rates.getHistoricalDataset(this.currency, this.base, months, days)
     .then((dataset: HistoricalData[]) => {

@@ -24,38 +24,46 @@
 </ion-header>
 
 <ion-content>
-  <div class="ion-padding">
-    <div class="chart-container">
-      <canvas #canvas></canvas>
-    </div>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <div class="chart-container">
+          <canvas #canvas id="chart"></canvas>
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-card *ngIf="points">
+          <ion-card-header>
+            <ion-card-title>{{currency}} against the {{base}}</ion-card-title>
+          </ion-card-header>
+    
+          <ion-item-divider>
+            <ion-text>
+              <ion-note color="primary">Since {{segment.value === 'sixMonths' ? '6 months ago' : 'last ' + segment.value}}</ion-note>
+            </ion-text>
+          </ion-item-divider>
+    
+          <ion-card-content>
+            <ion-item>
+              <ion-label>High</ion-label>
+              <ion-badge slot="end" color="success">{{points.high | currency: currency: 'symbol-narrow': '1.2-4'}}</ion-badge>
+            </ion-item>
+            <ion-item>
+              <ion-label>Low</ion-label>
+              <ion-badge slot="end" color="warning">{{points.low | currency: currency: 'symbol-narrow': '1.2-4'}}</ion-badge>
+            </ion-item>
+            <ion-item>
+              <ion-label>Average</ion-label>
+              <ion-badge slot="end" color="primary">{{points.average | currency: currency: 'symbol-narrow': '1.2-4'}}</ion-badge>
+            </ion-item>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
 
-    <ion-card *ngIf="points">
-      <ion-card-header>
-        <ion-card-title>{{currency}} against the {{base}}</ion-card-title>
-      </ion-card-header>
-
-      <ion-item-divider>
-        <ion-text>
-          <ion-note color="primary">Since {{segment.value === 'sixMonths' ? '6 months ago' : 'last ' + segment.value}}.</ion-note>
-        </ion-text>
-      </ion-item-divider>
-
-      <ion-card-content>
-        <ion-item>
-          <ion-label>High</ion-label>
-          <ion-badge slot="end" color="success">{{points.high | currency: currency: 'symbol-narrow': '1.2-4'}}</ion-badge>
-        </ion-item>
-        <ion-item>
-          <ion-label>Low</ion-label>
-          <ion-badge slot="end" color="warning">{{points.low | currency: currency: 'symbol-narrow': '1.2-4'}}</ion-badge>
-        </ion-item>
-        <ion-item>
-          <ion-label>Average</ion-label>
-          <ion-badge slot="end" color="primary">{{points.average | currency: currency: 'symbol-narrow': '1.2-4'}}</ion-badge>
-        </ion-item>
-      </ion-card-content>
-    </ion-card>
-  </div>
+    </ion-row>
+  </ion-grid>
 </ion-content>
 
 <app-converter-fab></app-converter-fab>
