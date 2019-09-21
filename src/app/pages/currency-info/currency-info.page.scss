@@ -1,6 +1,6 @@
 .chart-container {
     position: relative;
-    height: 50vh;
+    height: 60vh;
     width: 100%;
     margin: auto;
     min-height: 350px;
@@ -10,8 +10,4 @@
 
 .chart-border {
     border: 1px solid var(--ion-color-light-shade);
-}
-
-ion-grid {
-    padding-bottom: 10%;
 }

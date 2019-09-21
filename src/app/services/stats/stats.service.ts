@@ -32,7 +32,7 @@ export class StatsService {
             backgroundColor: 'rgba(40, 175, 176, 0.2)',
             borderColor: 'rgba(40, 175, 176, 1)',
             borderWidth: 2,
-            pointRadius: 1.2
+            pointRadius: 1.5
           }
         ]
       },
@@ -44,12 +44,24 @@ export class StatsService {
         title: {
           display: true,
           text: `1 ${base} in ${currency}`,
-          fontSize: 16
+          fontSize: 16,
+          fontColor: '#717172'
+        },
+        hover: {
+          intersect: false
         },
         tooltips: {
           callbacks: {
-            label: (tooltipItem, data) => `${data.datasets[tooltipItem.datasetIndex].label} = ${tooltipItem.yLabel} ${currency}`
-          }
+            label: (tooltipItem, data) => `${data.datasets[tooltipItem.datasetIndex].label} = ${(+tooltipItem.yLabel).toFixed(4)} ${currency}`
+          },
+          intersect : false,
+          mode:'index',
+          displayColors: false,
+          titleFontColor: '#ff3366',
+          titleFontSize: 13,
+          bodyFontSize: 13,
+          xPadding: 10,
+          yPadding: 10,
         }
       }
     });

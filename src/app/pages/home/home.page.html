@@ -2,7 +2,7 @@
   <ion-toolbar>
     <ng-container *ngIf="!isSearchbarOpen; then defaultToolbar"></ng-container>
     <ng-template #defaultToolbar>
-      <ion-title>Ion Currency</ion-title>
+      <ion-title>Home</ion-title>
       <ion-buttons slot="start">
         <ion-menu-button></ion-menu-button>
       </ion-buttons>
@@ -57,6 +57,6 @@
       <ion-label color="primary">{{latest.date | date: 'mediumDate'}}</ion-label>
     </ion-item>
   </div>
+  
+  <app-converter-fab slot="fixed"></app-converter-fab>
 </ion-content>
-
-<app-converter-fab></app-converter-fab>
