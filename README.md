@@ -12,6 +12,6 @@ $ ionic serve -o
 ## Screenshots
 
 <div style="text-align: center">
-    <img src="https://user-images.githubusercontent.com/37158241/65389004-271bdf80-dd49-11e9-8e84-a101e144522e.jpg" height="585" width="270" title="Android"/>
-    <img src="https://user-images.githubusercontent.com/37158241/65389005-27b47600-dd49-11e9-83ff-21e96f15032d.jpg" height="585" width="270" title="iOS"/>
+    <img src="https://user-images.githubusercontent.com/37158241/65389004-271bdf80-dd49-11e9-8e84-a101e144522e.jpg" height="585" width="270"/>
+    <img src="https://user-images.githubusercontent.com/37158241/65389005-27b47600-dd49-11e9-83ff-21e96f15032d.jpg" height="585" width="270"/>
 </div>
