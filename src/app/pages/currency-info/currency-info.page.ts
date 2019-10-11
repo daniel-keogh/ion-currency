@@ -88,7 +88,8 @@ export class CurrencyInfoPage implements OnInit {
   segmentChanged(ev: any) {
     let months: number;
     let days: number;
-    const enum Months {
+
+    enum Months {
       month = 1,
       sixMonths = 6,
       year = 12
@@ -99,13 +100,9 @@ export class CurrencyInfoPage implements OnInit {
         days = 7;
         break;
       case 'month':
-        months = Months.month;
-        break;
       case 'sixMonths':
-        months = Months.sixMonths;
-        break;
       case 'year':
-        months = Months.year;
+        months = Months[ev.detail.value as string];
         break;
       default:
         break;

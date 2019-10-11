@@ -32,7 +32,8 @@ export class StatsService {
             backgroundColor: 'rgba(40, 175, 176, 0.2)',
             borderColor: 'rgba(40, 175, 176, 1)',
             borderWidth: 2,
-            pointRadius: 1.5
+            pointRadius: 0,
+            pointHoverRadius: 5
           }
         ]
       },
@@ -52,10 +53,12 @@ export class StatsService {
         },
         tooltips: {
           callbacks: {
-            label: (tooltipItem, data) => `${data.datasets[tooltipItem.datasetIndex].label} = ${(+tooltipItem.yLabel).toFixed(4)} ${currency}`
+            label: (tooltipItem, data) => {
+              return `${data.datasets[tooltipItem.datasetIndex].label} = ${(+tooltipItem.yLabel).toFixed(4)} ${currency}`;
+            }
           },
           intersect : false,
-          mode:'index',
+          mode: 'index',
           displayColors: false,
           titleFontColor: '#ff3366',
           titleFontSize: 13,
@@ -70,9 +73,9 @@ export class StatsService {
   getPoints(dataset: HistoricalData[]): any {
     const rates = dataset.map(r => r.rate);
     return {
-      high: this.getHigh(rates),
-      low: this.getLow(rates),
-      average: this.getAvg(rates)
+      High: this.getHigh(rates),
+      Low: this.getLow(rates),
+      Average: this.getAvg(rates)
     };
   }
 
