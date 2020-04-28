@@ -8,23 +8,20 @@ import { currencies } from '../../common/currencies';
   styleUrls: ['./settings.page.scss'],
 })
 export class SettingsPage implements OnInit {
-
   defaultBase: string;
   defaultConverted: string;
   currencies = [...currencies];
 
-  constructor(private storage: StorageService) { }
+  constructor(private storage: StorageService) {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   ionViewWillEnter() {
     Promise.all([
       this.storage.getBaseCurrency(),
-      this.storage.getConvertedCurrency()
-    ])
-    .then(curCodes => {
-      [this.defaultBase, this.defaultConverted] = curCodes;
+      this.storage.getConvertedCurrency(),
+    ]).then((res) => {
+      [this.defaultBase, this.defaultConverted] = res;
     });
   }
 
@@ -35,5 +32,4 @@ export class SettingsPage implements OnInit {
   changeConvertedCurrency() {
     this.storage.setConvertedCurrency(this.defaultConverted);
   }
-
 }

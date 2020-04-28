@@ -1,24 +1,24 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { RatesService } from '../../services/rates/rates.service';
 import { CountriesService } from '../../services/countries/countries.service';
 import { IonSearchbar, ToastController } from '@ionic/angular';
-import { MenuComponent } from 'src/app/components/menu/menu.component';
 import { StorageService } from 'src/app/services/storage/storage.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
 })
-export class HomePage implements OnInit {
-
+export class HomePage implements OnInit, OnDestroy {
   latest: any = [];
   currencies: string[] = [];
   defaultCurrency: string;
   isSearchbarOpen = false;
 
-  @ViewChild(IonSearchbar, {static: false}) searchbar: IonSearchbar;
-  @ViewChild(MenuComponent, {static: false}) menu: MenuComponent;
+  latestSub: Subscription;
+
+  @ViewChild(IonSearchbar, { static: false }) searchbar: IonSearchbar;
   constructor(
     private rates: RatesService,
     private countries: CountriesService,
@@ -26,15 +26,21 @@ export class HomePage implements OnInit {
     private toastController: ToastController
   ) {}
 
-  ngOnInit() {
+  ngOnInit() {}
+
+  ngOnDestroy() {
+    this.latestSub?.unsubscribe();
   }
 
   ionViewWillEnter() {
-    this.storage.getBaseCurrency().then(cur => {
-      this.defaultCurrency = cur;
-    }).then(() => {
-      this.getLatestRates();
-    });
+    this.storage
+      .getBaseCurrency()
+      .then((cur) => {
+        this.defaultCurrency = cur;
+      })
+      .then(() => {
+        this.getLatestRates();
+      });
   }
 
   ionViewDidLeave() {
@@ -44,22 +50,22 @@ export class HomePage implements OnInit {
         this.searchbar.value = null;
       }
     }
-
-    this.menu.isOpen().then(isOpen => {
-      if (isOpen) {
-        this.menu.closeMenu();
-      }
-    });
   }
 
-  getLatestRates() {
-    this.rates.latest(this.defaultCurrency).subscribe(data => {
-      this.latest = data;
-    }, (err) => {
-      this.presentErrorToast(err);
-    }, () => {
-      this.currencies = [...Object.keys(this.latest.rates)].sort();
-    });
+  getLatestRates(ev?: any) {
+    this.latestSub = this.rates.latest(this.defaultCurrency).subscribe(
+      (data) => {
+        this.latest = data;
+      },
+      (err) => {
+        this.presentErrorToast(err);
+        ev?.target.complete();
+      },
+      () => {
+        this.currencies = [...Object.keys(this.latest.rates)].sort();
+        ev?.target.complete();
+      }
+    );
   }
 
   getFlag(currencyCode: string): string {
@@ -71,7 +77,7 @@ export class HomePage implements OnInit {
       header: 'Failed to get currency rates',
       message: err.name,
       duration: 3000,
-      buttons: [{text: 'OK'}]
+      buttons: [{ text: 'OK' }],
     });
     toast.present();
   }

@@ -1,13 +1,12 @@
 import { Directive, Input, HostListener } from '@angular/core';
 
 @Directive({
-  selector: '[searchLimit]'
+  selector: '[searchLimit]',
 })
 export class SearchLimitDirective {
-
   @Input('searchLimit') limit: number;
 
-  constructor() { }
+  constructor() {}
 
   @HostListener('keypress', ['$event'])
   onKeypress(e: any) {

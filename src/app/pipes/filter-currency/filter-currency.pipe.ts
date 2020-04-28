@@ -1,10 +1,9 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'filterCurrency'
+  name: 'filterCurrency',
 })
 export class FilterCurrencyPipe implements PipeTransform {
-
   transform(rates: any, search: string): any {
     if (!search) {
       return rates;
@@ -16,6 +15,7 @@ export class FilterCurrencyPipe implements PipeTransform {
         filtered[rate] = rates[rate];
       }
     }
+
     return filtered;
   }
 }

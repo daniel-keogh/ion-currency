@@ -1,9 +1,9 @@
 .logo-container {
     border-radius: 50%;
     height: 100px;
-    position: relative;
     width: 100px;
-    margin-top: 20px;
+    position: relative;
+    margin-top: 24px;
     margin-left: auto;
     margin-right: auto;
     
@@ -25,7 +25,5 @@
 }
 
 ion-card {
-    img {
-        max-height: 500px;
-    }
+    margin-top: 10%;
 }

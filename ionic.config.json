@@ -1,7 +1,7 @@
 {
   "name": "ion-currency",
   "integrations": {
-    "cordova": {}
+    "capacitor": {}
   },
   "type": "angular"
 }

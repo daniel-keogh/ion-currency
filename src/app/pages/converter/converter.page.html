@@ -1,19 +1,21 @@
 <ion-header>
   <ion-toolbar>
+    <ion-title>Converter</ion-title>
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/home"></ion-back-button>
     </ion-buttons>
     <ion-buttons slot="end">
-      <ion-icon slot="icon-only" name="ellipsis-vertical" (click)="presentPopover($event)"></ion-icon>
+      <ion-button (click)="presentPopover($event)">
+        <ion-icon slot="icon-only" ios="ellipsis-horizontal" md="ellipsis-vertical"></ion-icon>
+      </ion-button>
     </ion-buttons>
-    <ion-title>Converter</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <ion-grid>
     <ion-row>
-      <ion-col size-lg="8" offset-lg="2" size-xl="6" offset-xl="3">
+      <ion-col size-md="8" offset-md="2" size-lg="6" offset-lg="3">
         <ion-card>
           <ion-card-header>
             <ion-card-subtitle>{{1 | currency: baseCur: '': '1.0'}} {{baseCur}} equals</ion-card-subtitle>
@@ -27,11 +29,22 @@
           <ion-card-content class="ion-padding">
             <ion-item>
               <ion-label position="floating">{{baseCur | currencyName}}</ion-label>
-              <ion-input #base autofocus type="number" clear-input step="1" (ionInput)="convert.value = baseChanged(base.value)"></ion-input>
+              <ion-input #base 
+                autofocus
+                type="number"
+                clear-input
+                step="1"
+                (ionInput)="convert.value = baseChanged(base.value)">
+              </ion-input>
             </ion-item>
             <ion-item>
               <ion-label position="floating">{{convertTo | currencyName}}</ion-label>
-              <ion-input #convert type="number" clear-input step="1" (ionInput)="base.value = convertChanged(convert.value)"></ion-input>
+              <ion-input #convert
+                type="number"
+                clear-input
+                step="1"
+                (ionInput)="base.value = convertChanged(convert.value)">
+              </ion-input>
             </ion-item>
           </ion-card-content>
         </ion-card>

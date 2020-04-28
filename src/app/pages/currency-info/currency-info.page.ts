@@ -1,47 +1,76 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  ElementRef,
+  OnDestroy,
+} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { StatsService } from 'src/app/services/stats/stats.service';
+import { ChartsService } from 'src/app/services/charts/charts.service';
 import { StorageService } from 'src/app/services/storage/storage.service';
 import { currencies } from 'src/app/common/currencies';
 import { AlertController } from '@ionic/angular';
 import { HistoricalData } from '../../interfaces/historical-data';
 import { RatesService } from 'src/app/services/rates/rates.service';
+import { Points } from './../../interfaces/points';
+import { Subscription } from 'rxjs';
+
+enum Months {
+  month = 1,
+  sixMonths = 6,
+  year = 12,
+}
 
 @Component({
   selector: 'app-currency-info',
   templateUrl: './currency-info.page.html',
   styleUrls: ['./currency-info.page.scss'],
 })
-export class CurrencyInfoPage implements OnInit {
-
+export class CurrencyInfoPage implements OnInit, OnDestroy {
   currency: string;
   base: string;
   currencies = [...currencies];
-  points: any;
+  points: Points;
 
-  @ViewChild('canvas', {static: false}) canvas: ElementRef<HTMLCanvasElement>;
+  ratesSub: Subscription;
+
+  @ViewChild('canvas') canvas: ElementRef<HTMLCanvasElement>;
   constructor(
     private activatedRouter: ActivatedRoute,
     private alertController: AlertController,
     private rates: RatesService,
     private router: Router,
-    private stats: StatsService,
+    private charts: ChartsService,
     private storage: StorageService
-  ) { }
+  ) {}
 
   ngOnInit() {
-    const days = 7;
-    const validateCurrency = (currencyCode: string) => this.currencies.find(cur => currencyCode === cur.code) ? true : false;
+    this.activatedRouter.paramMap.subscribe(
+      (pm) => (this.currency = pm.get('currency-code'))
+    );
 
-    this.activatedRouter.paramMap.subscribe(pm => this.currency = pm.get('currency-code'));
-    this.activatedRouter.queryParamMap.subscribe(qpm => this.base = qpm.get('base'));
+    this.activatedRouter.queryParamMap.subscribe(
+      (qpm) => (this.base = qpm.get('base'))
+    );
 
-    if (validateCurrency(this.base) && validateCurrency(this.currency)) {
+    if (
+      this.validateCurrency(this.base) &&
+      this.validateCurrency(this.currency)
+    ) {
+      const days = 7;
       this.createChart(days);
     } else {
+      // A valid currency wasn't entered into the browser navbar
       this.router.navigate(['/home']);
-      this.invalidCurrencyAlert();
+      this.genericErrorAlert({
+        message: 'Sorry, failed to find anything about that currency.',
+        header: 'Invalid Currency',
+      });
     }
+  }
+
+  ngOnDestroy() {
+    this.ratesSub?.unsubscribe();
   }
 
   async createChart(days?: number, months?: number) {
@@ -50,50 +79,36 @@ export class CurrencyInfoPage implements OnInit {
       this.base = await this.storage.getBaseCurrency();
     }
 
-    this.rates.getHistoricalDataset(this.currency, this.base, months, days)
-    .then((dataset: HistoricalData[]) => {
-      this.stats.generateChart({
-        canvas: this.canvas,
-        dataset,
-        currency: this.currency,
-        base: this.base
-      });
-      this.points = this.stats.getPoints(dataset);
-    })
-    .catch(err => {
-      this.router.navigate(['/home']);
-      this.genericErrorAlert(err);
-    });
+    this.ratesSub = this.rates
+      .getHistoricalDataset(this.currency, this.base, months, days)
+      .subscribe(
+        (dataset) => {
+          this.charts.generateChart({
+            canvas: this.canvas,
+            dataset,
+            currency: this.currency,
+            base: this.base,
+          });
+
+          this.points = this.getPoints(dataset);
+        },
+        (err) => {
+          this.router.navigate(['/home']);
+          this.genericErrorAlert({
+            message: `Failed to load information about ${this.currency}.`,
+            subHeader: err.name,
+          });
+        }
+      );
   }
 
-  async genericErrorAlert(err: Error) {
-    const alert = await this.alertController.create({
-      header: 'Error',
-      subHeader: err.name,
-      message: `Failed to load information about ${this.currency}.`,
-      buttons: ['OK']
-    });
-    await alert.present();
-  }
-
-  async invalidCurrencyAlert() {
-    const alert = await this.alertController.create({
-      header: 'Invalid Currency',
-      message: 'Sorry, failed to find anything about that currency.',
-      buttons: ['OK']
-    });
-    await alert.present();
+  validateCurrency(currencyCode: string): boolean {
+    return !!this.currencies.find((cur) => currencyCode === cur.code);
   }
 
   segmentChanged(ev: any) {
     let months: number;
     let days: number;
-
-    enum Months {
-      month = 1,
-      sixMonths = 6,
-      year = 12
-    }
 
     switch (ev.detail.value) {
       case 'week':
@@ -107,6 +122,36 @@ export class CurrencyInfoPage implements OnInit {
       default:
         break;
     }
+
     this.createChart(days, months);
+  }
+
+  getPoints(dataset: HistoricalData[]): Points {
+    const rates = dataset.map((r) => r.rate);
+
+    return {
+      High: Math.max(...rates),
+      Low: Math.min(...rates),
+      Average: rates.reduce((a, b) => a + b, 0) / rates.length,
+    };
+  }
+
+  async genericErrorAlert({
+    message,
+    header = 'Error',
+    subHeader,
+  }: {
+    message: string;
+    header?: string;
+    subHeader?: string;
+  }) {
+    const alert = await this.alertController.create({
+      header,
+      subHeader,
+      message,
+      buttons: ['OK'],
+    });
+
+    await alert.present();
   }
 }

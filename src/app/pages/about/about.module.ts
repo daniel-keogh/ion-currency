@@ -5,13 +5,15 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { IonicModule } from '@ionic/angular';
 
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
+
 import { AboutPage } from './about.page';
 
 const routes: Routes = [
   {
     path: '',
-    component: AboutPage
-  }
+    component: AboutPage,
+  },
 ];
 
 @NgModule({
@@ -19,8 +21,9 @@ const routes: Routes = [
     CommonModule,
     FormsModule,
     IonicModule,
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
   ],
-  declarations: [AboutPage]
+  providers: [InAppBrowser],
+  declarations: [AboutPage],
 })
 export class AboutPageModule {}

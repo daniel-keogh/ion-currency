@@ -12,7 +12,6 @@
     <ion-row>
       <ion-col size-lg="8" offset-lg="2" size-xl="6" offset-xl="3">
         <ion-card>
-          <img src="../../../assets/shapes.svg"/>
           <div class="logo-container">
             <img class="logo" src="../../../assets/icon/favicon.png"/>
           </div>
@@ -22,10 +21,15 @@
           </ion-card-header>
           <ion-card-content>
             <ion-item class="ion-margin-bottom">
-              <ion-label class="ion-text-wrap ion-text-center">Simple currency converter app.</ion-label>
+              <ion-label class="ion-text-wrap ion-text-center">
+                Simple currency converter app.
+              </ion-label>
             </ion-item>
             <div class="button-links ion-justify-content-center ion-wrap">
-              <ion-button fill="clear" color="dark" onclick="window.open('https:/\/github.com/daniel-keogh/ion-currency', '_system')">
+              <ion-button (click)="openGithub()"
+                fill="clear"
+                size="large"
+                color="dark">
                 <ion-icon slot="icon-only" name="logo-github"></ion-icon>
               </ion-button>
             </div>

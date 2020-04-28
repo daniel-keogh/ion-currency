@@ -15,8 +15,7 @@
     
     <ion-searchbar 
       #searchbar
-      class="search"
-      placeholder="Currency code"
+      placeholder="Currency Code"
       showCancelButton="always"
       [searchLimit]="3"
       [hidden]="!isSearchbarOpen"
@@ -26,35 +25,58 @@
   </ion-toolbar>
 </ion-header>
 
-<app-menu></app-menu>
-
 <ion-content class="ion-padding">
-  <ion-item>
-    <ion-label>Base currency</ion-label>
-    <ion-select
-      interface="action-sheet"
-      [placeholder]="defaultCurrency | currencyName"
-      [(ngModel)]="defaultCurrency"
-      (ionChange)="getLatestRates()">
-      <ion-select-option *ngFor="let currency of currencies" value="{{currency}}">{{currency | currencyName}}</ion-select-option>
-    </ion-select>
-  </ion-item>
+  <ion-refresher slot="fixed" (ionRefresh)="getLatestRates($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
 
-  <ion-list>
-    <ion-item button detail 
-      *ngFor="let rate of latest.rates | filterCurrency: searchbar.value | keyvalue" 
-      [routerLink]="['/currency', rate.key]"
-      [queryParams]="{base: defaultCurrency}">
-      <ion-avatar slot="start">
-        <ion-img [src]="getFlag(rate.key)" (ionError)="$event.target.src='../../../assets/images/flag.svg'"></ion-img>
-      </ion-avatar>
-      <ion-label>{{rate.value | currency: rate.key: 'symbol-narrow': '1.2-4'}}</ion-label>
-    </ion-item>
-  </ion-list>
+  <ion-grid>
+    <ion-row>
+      <ion-col size-md="8" offset-md="2" size-lg="6" offset-lg="3">
+        <ion-item>
+          <ion-label>Base currency</ion-label>
+          <ion-select
+            interface="action-sheet"
+            [placeholder]="defaultCurrency | currencyName"
+            [(ngModel)]="defaultCurrency"
+            (ionChange)="getLatestRates()">
+            <ion-select-option *ngFor="let currency of currencies" value="{{currency}}">{{currency | currencyName}}</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+    </ion-row>
 
-  <ion-item class="ion-text-center" lines="none" *ngIf="!searchbar.value">
-    <ion-label color="primary">{{latest.date | date: 'mediumDate'}}</ion-label>
-  </ion-item>
-  
-  <app-converter-fab slot="fixed"></app-converter-fab>
+    <ion-row>
+      <ion-col size-md="8" offset-md="2" size-lg="6" offset-lg="3">
+        <ion-list>
+          <ion-item button detail 
+            *ngFor="let rate of latest.rates | filterCurrency: searchbar.value | keyvalue" 
+            [routerLink]="['/currency', rate.key]"
+            [queryParams]="{base: defaultCurrency}">
+            <ion-avatar slot="start">
+              <ion-img [src]="getFlag(rate.key)" (ionError)="$event.target.src='../../../assets/images/flag.svg'"></ion-img>
+            </ion-avatar>
+            <ion-label>{{rate.value | currency: rate.key: 'symbol-narrow': '1.2-4'}}</ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col size-md="8" offset-md="2" size-lg="6" offset-lg="3">
+        <ion-item class="ion-text-center" lines="none" *ngIf="!searchbar.value">
+          <ion-label color="primary">{{latest.date | date: 'mediumDate'}}</ion-label>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-fab vertical="bottom"
+    horizontal="end"
+    slot="fixed"
+    class="ion-padding">
+    <ion-fab-button routerLink="/converter" color="tertiary">
+      <ion-icon name="calculator"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>

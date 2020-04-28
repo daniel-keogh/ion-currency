@@ -1,9 +1,10 @@
+import { Router } from '@angular/router';
+import { PopoverComponent } from './../../components/popover/popover.component';
 import { Component, OnInit, ViewChildren, QueryList } from '@angular/core';
 import { StorageService } from 'src/app/services/storage/storage.service';
 import { currencies } from '../../common/currencies';
 import { RatesService } from 'src/app/services/rates/rates.service';
 import { PopoverController, IonInput, ToastController } from '@ionic/angular';
-import { SettingsPopoverComponent } from 'src/app/components/settings-popover/settings-popover.component';
 
 @Component({
   selector: 'app-converter',
@@ -11,7 +12,6 @@ import { SettingsPopoverComponent } from 'src/app/components/settings-popover/se
   styleUrls: ['./converter.page.scss'],
 })
 export class ConverterPage implements OnInit {
-
   baseCur: string;
   convertTo: string;
   currencies = [...currencies];
@@ -22,50 +22,61 @@ export class ConverterPage implements OnInit {
   constructor(
     private storage: StorageService,
     private rates: RatesService,
+    private router: Router,
     private popoverController: PopoverController,
     private toastController: ToastController
-  ) { }
+  ) {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   ionViewWillEnter() {
     Promise.all([
       this.storage.getBaseCurrency(),
-      this.storage.getConvertedCurrency()
-    ])
-    .then(curCodes => {
+      this.storage.getConvertedCurrency(),
+    ]).then((curCodes) => {
       [this.baseCur, this.convertTo] = curCodes;
 
-      this.rates.convert(this.baseCur, this.convertTo).subscribe(data => {
-        this.baseToConv = data.rates[this.convertTo];
-        this.date = data.date;
-      }, (err) => {
-        this.presentErrorToast(err);
-      });
+      this.rates.convert(this.baseCur, this.convertTo).subscribe(
+        (data) => {
+          this.baseToConv = data.rates[this.convertTo];
+          this.date = data.date;
+        },
+        (err) => {
+          this.presentErrorToast(err);
+        }
+      );
     });
   }
 
   ionViewDidLeave() {
-    this.inputs.forEach(item => item.value = null);
+    this.inputs.forEach((item) => (item.value = null));
   }
 
   baseChanged(val: any): any {
-    return (this.baseToConv * (+val)).toFixed(4);
+    return (this.baseToConv * +val).toFixed(4);
   }
 
   convertChanged(val: any): any {
-    return ((1 / this.baseToConv) * (+val)).toFixed(4);
+    return ((1 / this.baseToConv) * +val).toFixed(4);
   }
 
-  async presentPopover(ev: any) {
-    const popover = await this.popoverController.create({
-      component: SettingsPopoverComponent,
-      event: ev,
-      translucent: true,
-      showBackdrop: false
-    });
-    return await popover.present();
+  presentPopover(event: any) {
+    this.popoverController
+      .create({
+        component: PopoverComponent,
+        event,
+        translucent: true,
+        componentProps: { items: ['Settings'] },
+      })
+      .then((popover) => {
+        popover.present();
+        return popover.onWillDismiss();
+      })
+      .then((result) => {
+        if (result.data === 'Settings') {
+          this.router.navigate([`/settings`]);
+        }
+      });
   }
 
   async presentErrorToast(err: Error) {
@@ -73,8 +84,9 @@ export class ConverterPage implements OnInit {
       header: 'Failed to get currency rates',
       message: err.name,
       duration: 3000,
-      buttons: [{text: 'OK'}]
+      buttons: [{ text: 'OK' }],
     });
+
     toast.present();
   }
 }

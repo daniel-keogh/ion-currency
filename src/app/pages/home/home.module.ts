@@ -8,7 +8,6 @@ import { HomePage } from './home.page';
 
 import { DirectivesModule } from '../../directives/directives.module';
 import { PipesModule } from '../../pipes/pipes.module';
-import { ComponentsModule } from 'src/app/components/components.module';
 
 @NgModule({
   imports: [
@@ -17,14 +16,13 @@ import { ComponentsModule } from 'src/app/components/components.module';
     IonicModule,
     DirectivesModule,
     PipesModule,
-    ComponentsModule,
     RouterModule.forChild([
       {
         path: '',
-        component: HomePage
-      }
-    ])
+        component: HomePage,
+      },
+    ]),
   ],
-  declarations: [HomePage]
+  declarations: [HomePage],
 })
 export class HomePageModule {}
