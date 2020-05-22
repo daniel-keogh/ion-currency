@@ -7,7 +7,6 @@ import {
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ChartsService } from 'src/app/services/charts/charts.service';
-import { StorageService } from 'src/app/services/storage/storage.service';
 import { currencies } from 'src/app/common/currencies';
 import { AlertController } from '@ionic/angular';
 import { HistoricalData } from '../../interfaces/historical-data';
@@ -20,6 +19,9 @@ enum Months {
   sixMonths = 6,
   year = 12,
 }
+
+type SegmentValue = 'week' | 'month' | 'sixMonths' | 'year';
+type Segment = { label: string; value: SegmentValue };
 
 @Component({
   selector: 'app-currency-info',
@@ -34,14 +36,32 @@ export class CurrencyInfoPage implements OnInit, OnDestroy {
 
   ratesSub: Subscription;
 
+  segments: Segment[] = [
+    {
+      label: 'Week',
+      value: 'week',
+    },
+    {
+      label: 'Month',
+      value: 'month',
+    },
+    {
+      label: 'Six Months',
+      value: 'sixMonths',
+    },
+    {
+      label: 'Year',
+      value: 'year',
+    },
+  ];
+
   @ViewChild('canvas') canvas: ElementRef<HTMLCanvasElement>;
   constructor(
     private activatedRouter: ActivatedRoute,
     private alertController: AlertController,
     private rates: RatesService,
     private router: Router,
-    private charts: ChartsService,
-    private storage: StorageService
+    private charts: ChartsService
   ) {}
 
   ngOnInit() {
@@ -53,12 +73,9 @@ export class CurrencyInfoPage implements OnInit, OnDestroy {
       (qpm) => (this.base = qpm.get('base'))
     );
 
-    if (
-      this.validateCurrency(this.base) &&
-      this.validateCurrency(this.currency)
-    ) {
-      const days = 7;
-      this.createChart(days);
+    if (this.validateCurrencies(this.base, this.currency)) {
+      // Get last 7 days
+      this.createChart(this.subtractDays(new Date(), 7));
     } else {
       // A valid currency wasn't entered into the browser navbar
       this.router.navigate(['/home']);
@@ -73,14 +90,9 @@ export class CurrencyInfoPage implements OnInit, OnDestroy {
     this.ratesSub?.unsubscribe();
   }
 
-  async createChart(days?: number, months?: number) {
-    // Base currency wasn't passed into the URL: Use default
-    if (this.base === undefined) {
-      this.base = await this.storage.getBaseCurrency();
-    }
-
+  async createChart(startDate: Date) {
     this.ratesSub = this.rates
-      .getHistoricalDataset(this.currency, this.base, months, days)
+      .getHistoricalDataset(this.currency, this.base, startDate)
       .subscribe(
         (dataset) => {
           this.charts.generateChart({
@@ -102,28 +114,23 @@ export class CurrencyInfoPage implements OnInit, OnDestroy {
       );
   }
 
-  validateCurrency(currencyCode: string): boolean {
-    return !!this.currencies.find((cur) => currencyCode === cur.code);
+  validateCurrencies(...currencyCodes: string[]): boolean {
+    return currencyCodes.every((code) => {
+      return !!this.currencies.find((cur) => cur.code === code);
+    });
   }
 
   segmentChanged(ev: any) {
-    let months: number;
-    let days: number;
+    const startDate = new Date();
+    const value: SegmentValue = ev.detail.value;
 
-    switch (ev.detail.value) {
-      case 'week':
-        days = 7;
-        break;
-      case 'month':
-      case 'sixMonths':
-      case 'year':
-        months = Months[ev.detail.value as string];
-        break;
-      default:
-        break;
+    if (value === 'week') {
+      this.subtractDays(startDate, 7);
+    } else {
+      this.subtractMonths(startDate, Months[value]);
     }
 
-    this.createChart(days, months);
+    this.createChart(startDate);
   }
 
   getPoints(dataset: HistoricalData[]): Points {
@@ -134,6 +141,16 @@ export class CurrencyInfoPage implements OnInit, OnDestroy {
       Low: Math.min(...rates),
       Average: rates.reduce((a, b) => a + b, 0) / rates.length,
     };
+  }
+
+  subtractMonths(date: Date, months: number): Date {
+    date.setMonth(date.getMonth() - months);
+    return date;
+  }
+
+  subtractDays(date: Date, days: number): Date {
+    date.setDate(date.getDate() - days);
+    return date;
   }
 
   async genericErrorAlert({

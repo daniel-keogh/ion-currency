@@ -40,7 +40,9 @@
             [placeholder]="defaultCurrency | currencyName"
             [(ngModel)]="defaultCurrency"
             (ionChange)="getLatestRates()">
-            <ion-select-option *ngFor="let currency of currencies" value="{{currency}}">{{currency | currencyName}}</ion-select-option>
+            <ion-select-option *ngFor="let currency of currencies" 
+              value="{{currency}}">{{currency | currencyName}}
+            </ion-select-option>
           </ion-select>
         </ion-item>
       </ion-col>
@@ -54,7 +56,9 @@
             [routerLink]="['/currency', rate.key]"
             [queryParams]="{base: defaultCurrency}">
             <ion-avatar slot="start">
-              <ion-img [src]="getFlag(rate.key)" (ionError)="$event.target.src='../../../assets/images/flag.svg'"></ion-img>
+              <ion-img [src]="getFlag(rate.key)"
+                (ionError)="$event.target.src='../../../assets/images/flag.svg'">
+              </ion-img>
             </ion-avatar>
             <ion-label>{{rate.value | currency: rate.key: 'symbol-narrow': '1.2-4'}}</ion-label>
           </ion-item>

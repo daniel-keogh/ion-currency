@@ -23,23 +23,13 @@ export class RatesService {
   getHistoricalDataset(
     currency: string,
     base: string,
-    numMonths?: number,
-    numDays?: number
+    startDate: Date
   ): Observable<HistoricalData[]> {
     const today: Date = new Date();
-    const start: Date = new Date();
-
-    if (numMonths) {
-      this.subtractMonths(start, numMonths);
-    } else {
-      this.subtractDays(start, numDays);
-    }
 
     return this.http
       .get(
-        `https://api.exchangeratesapi.io/history?start_at=${this.formatDate(
-          start
-        )}&end_at=${this.formatDate(today)}&symbols=${currency}&base=${base}`
+        `https://api.exchangeratesapi.io/history?start_at=${this.formatDate(startDate)}&end_at=${this.formatDate(today)}&symbols=${currency}&base=${base}`
       )
       .pipe(
         map((data: any) => {
@@ -52,15 +42,5 @@ export class RatesService {
 
   private formatDate(date: Date): string {
     return date.toISOString().split('T')[0];
-  }
-
-  private subtractMonths(date: Date, months: number): Date {
-    date.setMonth(date.getMonth() - months);
-    return date;
-  }
-
-  private subtractDays(date: Date, days: number): Date {
-    date.setDate(date.getDate() - days);
-    return date;
   }
 }

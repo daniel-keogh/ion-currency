@@ -11,17 +11,9 @@
       value="week"
       #segment
       class="ion-justify-content-center">
-      <ion-segment-button value="week">
-        <ion-label>Week</ion-label>
-      </ion-segment-button>
-      <ion-segment-button value="month">
-        <ion-label>Month</ion-label>
-      </ion-segment-button>
-      <ion-segment-button value="sixMonths">
-        <ion-label>6 Months</ion-label>
-      </ion-segment-button>
-      <ion-segment-button value="year">
-        <ion-label>Year</ion-label>
+      <ion-segment-button *ngFor="let segment of segments"
+        [value]="segment.value">
+        <ion-label>{{segment.label}}</ion-label>
       </ion-segment-button>
     </ion-segment>
   </ion-toolbar>
