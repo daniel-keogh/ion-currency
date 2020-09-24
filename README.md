@@ -1,12 +1,12 @@
 # Ion Currency
 
-Ionic 4 app that displays foreign exchange rates from the European Central Bank using the [Exchange Rates API](https://exchangeratesapi.io/). The app features a converter, and uses [Chart.js](https://www.chartjs.org/) to display a visual overview of historical rates.
+Ionic app that displays foreign exchange rates from the European Central Bank using the [Exchange Rates API](https://exchangeratesapi.io/). The app features a converter, and uses [Chart.js](https://www.chartjs.org/) to display a visual overview of historical rates.
 
 ## Run
 
 ```sh
 $ npm install
-$ ionic serve -o
+$ ionic serve
 ```
 
 ## Screenshots
