@@ -1,10 +1,10 @@
 import { Router } from '@angular/router';
-import { PopoverComponent } from './../../components/popover/popover.component';
 import { Component, OnInit, ViewChildren, QueryList } from '@angular/core';
-import { StorageService } from 'src/app/services/storage/storage.service';
-import { currencies } from '../../common/currencies';
-import { RatesService } from 'src/app/services/rates/rates.service';
 import { PopoverController, IonInput, ToastController } from '@ionic/angular';
+import { currencies } from '../../common/currencies';
+import { PopoverComponent } from './../../components/popover/popover.component';
+import { StorageService } from './../../services/storage/storage.service';
+import { RatesService } from './../../services/rates/rates.service';
 
 @Component({
   selector: 'app-converter',

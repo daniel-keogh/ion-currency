@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { HistoricalData } from 'src/app/interfaces/historical-data';
 import { map } from 'rxjs/operators';
+import { HistoricalData } from './../../interfaces/historical-data';
+import { Rates } from '../../interfaces/rates';
+
+const BASE_URL = 'https://api.exchangerate.host/';
 
 @Injectable({
   providedIn: 'root',
@@ -10,13 +13,13 @@ import { map } from 'rxjs/operators';
 export class RatesService {
   constructor(private http: HttpClient) {}
 
-  latest(base: string): Observable<any> {
-    return this.http.get(`https://api.exchangeratesapi.io/latest?base=${base}`);
+  latest(base: string): Observable<Rates> {
+    return this.http.get<Rates>(`${BASE_URL}/latest?base=${base}`);
   }
 
-  convert(base: string, convertTo: string): Observable<any> {
-    return this.http.get(
-      `https://api.exchangeratesapi.io/latest?symbols=${convertTo}&base=${base}`
+  convert(base: string, convertTo: string): Observable<Rates> {
+    return this.http.get<Rates>(
+      `${BASE_URL}/latest?symbols=${convertTo}&base=${base}`
     );
   }
 
@@ -25,11 +28,12 @@ export class RatesService {
     base: string,
     startDate: Date
   ): Observable<HistoricalData[]> {
-    const today: Date = new Date();
+    const start = this.formatDate(startDate);
+    const end = this.formatDate(new Date());
 
     return this.http
       .get(
-        `https://api.exchangeratesapi.io/history?start_at=${this.formatDate(startDate)}&end_at=${this.formatDate(today)}&symbols=${currency}&base=${base}`
+        `${BASE_URL}/timeseries?start_date=${start}&end_date=${end}&symbols=${currency}&base=${base}`
       )
       .pipe(
         map((data: any) => {

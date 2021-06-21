@@ -1,4 +1,4 @@
 export interface HistoricalData {
-    date: string;
-    rate: number;
+  date: string;
+  rate: number;
 }

@@ -1,8 +1,10 @@
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { IonSearchbar, ToastController } from '@ionic/angular';
+import { currencies } from './../../common/currencies';
+import { Rates } from './../../interfaces/rates';
 import { RatesService } from '../../services/rates/rates.service';
 import { CountriesService } from '../../services/countries/countries.service';
-import { IonSearchbar, ToastController } from '@ionic/angular';
-import { StorageService } from 'src/app/services/storage/storage.service';
+import { StorageService } from '../../services/storage/storage.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -11,7 +13,7 @@ import { Subscription } from 'rxjs';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage implements OnInit, OnDestroy {
-  latest: any = [];
+  latest: Rates = {};
   currencies: string[] = [];
   defaultCurrency: string;
   isSearchbarOpen = false;
@@ -62,7 +64,16 @@ export class HomePage implements OnInit, OnDestroy {
         ev?.target.complete();
       },
       () => {
-        this.currencies = [...Object.keys(this.latest.rates)].sort();
+        const keys = Object.keys(this.latest.rates);
+
+        this.currencies = keys.sort().filter(code => !!currencies.find(c => c.code === code));
+
+        keys.forEach(k => {
+          if (this.currencies.indexOf(k) === -1) {
+            delete this.latest.rates[k];
+          }
+        })
+
         ev?.target.complete();
       }
     );
